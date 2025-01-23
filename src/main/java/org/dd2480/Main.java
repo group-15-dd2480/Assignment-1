@@ -60,6 +60,37 @@ public class Main {
         return false;
     }
 
+    /**
+     * Calculates the area of a triangle given its three points.
+     * 
+     * @param points an array of points representing the vertices of the triangle
+     * @return the area of the triangle
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If the number of points is not 3</li>
+     *                                  <li>If any point is null</li>
+     *                                  <li>If any point has coordinates that are
+     *                                  NaN or infinite</li>
+     *                                  </ul>
+     */
+    public static double triangleArea(Point2D[] points) {
+        if (points.length != 3)
+            throw new IllegalArgumentException("Exactly 3 points are required to calculate the area of a triangle");
+
+        for (var point : points) {
+            if (point == null)
+                throw new IllegalArgumentException("Null points are not allowed");
+            if (!Double.isFinite(point.getX()) || !Double.isFinite(point.getY()))
+                throw new IllegalArgumentException("Non-finite points are not allowed");
+        }
+
+        double a = points[0].getX() * (points[1].getY() - points[2].getY());
+        double b = points[1].getX() * (points[2].getY() - points[0].getY());
+        double c = points[2].getX() * (points[0].getY() - points[1].getY());
+
+        return Math.abs((a + b + c) / 2);
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
