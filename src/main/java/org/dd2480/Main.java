@@ -29,12 +29,7 @@ public class Main {
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
-                // TODO: Change this distance calculation to the function proposed in Issue #4
-
-                // For example: if (dist(point[i], point[j]) > 2 * radius) return false;
-                double xDiff = points[j].getX() - points[i].getX();
-                double yDiff = points[j].getY() - points[i].getY();
-                double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+                double distance = calculateDistanceBetween2Points(points[j], points[i]);
                 if (distance > 2 * radius)
                     return false;
             }
