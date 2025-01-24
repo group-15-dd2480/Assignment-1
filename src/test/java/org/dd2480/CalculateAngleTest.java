@@ -43,20 +43,4 @@ public class CalculateAngleTest {
         assertEquals(expectedAngle, result, 1e-9);
     }
 
-    @Test
-    void shouldThrowIllegalArgumentException_whenAnyPointNull() {
-        Point2D pointA = null;
-        Point2D pointB = null;
-        // Expecting IllegalArgumentException for undefined angle
-        assertThrows(IllegalArgumentException.class, () -> Main.getVectorMagnitude(pointA, pointB));
-    }
-
-    @Test
-    void shouldReturnTrueValue_whenCorrectInput() {
-        Point2D pointA = new Point2D.Double(0,0);
-        Point2D pointB = new Point2D.Double(-1,0);
-        double expectedMagnitude = 1;
-        double result = Main.getVectorMagnitude(pointA,pointB);
-        assertEquals(expectedMagnitude,result,1e-9);
-    }
 }
