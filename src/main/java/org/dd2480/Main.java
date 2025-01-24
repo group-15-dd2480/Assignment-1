@@ -30,6 +30,7 @@ public class Main {
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
                 // TODO: Change this distance calculation to the function proposed in Issue #4
+
                 // For example: if (dist(point[i], point[j]) > 2 * radius) return false;
                 double xDiff = points[j].getX() - points[i].getX();
                 double yDiff = points[j].getY() - points[i].getY();
@@ -38,6 +39,21 @@ public class Main {
                     return false;
             }
         return true;
+    }
+
+    /**
+     * 
+     * Function that corresponds to LIC 0
+     * 
+     * @param point1 a 2D point
+     * @param point2 a 2D point
+     * @return distance between point1 and point2
+     */
+    public static double calculateDistanceBetween2Points(Point2D point1, Point2D point2) {
+        double xDiff = point2.getX() - point1.getX();
+        double yDiff = point2.getY() - point1.getY();
+        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+        return distance;
     }
 
     /**
