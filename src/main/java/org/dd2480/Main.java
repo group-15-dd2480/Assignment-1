@@ -61,6 +61,43 @@ public class Main {
     }
 
     /**
+     * 
+     * Function that corresponds to LIC 4
+     * 
+     * @param points array of points
+     * @param qPts   number of consecutive points
+     * @param quads  number of quadrants
+     * @return {@code true} iff there exists at least one set of {@code qPts}
+     *         consecutive
+     *         points that lie in more than {@code quads} quadrants, {@code false}
+     *         otherwise
+     */
+    public static boolean lic4(Point2D[] points, int qPts, int quads) {
+        if (qPts < 2 || qPts > points.length)
+            throw new IllegalArgumentException("expects 2 <= qPts <= number of points");
+        if (quads < 1 || quads > 3)
+            throw new IllegalArgumentException("expects 1 <= quads <= 3");
+
+        for (int i = 0; i < points.length - qPts + 1; i++) {
+            boolean[] quadrants = new boolean[4];
+            for (int j = 0; j < qPts; j++) {
+                int quad = quadrant(points[i + j]);
+                quadrants[quad - 1] = true;
+            }
+
+            int count = 0;
+            for (var quad : quadrants)
+                if (quad)
+                    count++;
+
+            if (count > quads)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      * 
      * @param points an array of points representing the vertices of the triangle
@@ -89,6 +126,40 @@ public class Main {
         double c = points[2].getX() * (points[0].getY() - points[1].getY());
 
         return Math.abs((a + b + c) / 2);
+    }
+
+    /**
+     * 
+     * Calculates which of the four quadrants a point lies in.
+     * When a point lies on an axis, it is considered to be in the quadrant with the
+     * lowest number.
+     * 
+     * @param point the point to check
+     * @return Which quadrant the point lies in (1, 2, 3, or 4)q
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If the point is null</li>
+     *                                  <li>If the point has coordinates that are
+     *                                  NaN or infinite</li>
+     *                                  </ul>
+     */
+    public static int quadrant(Point2D point) {
+        if (point == null)
+            throw new IllegalArgumentException("Null points are not allowed");
+        if (!Double.isFinite(point.getX()) || !Double.isFinite(point.getY()))
+            throw new IllegalArgumentException("Non-finite points are not allowed");
+
+        if (point.getY() >= 0) {
+            if (point.getX() >= 0)
+                return 1;
+            else
+                return 2;
+        } else {
+            if (point.getX() <= 0)
+                return 3;
+            else
+                return 4;
+        }
     }
 
     public static void main(String[] args) {
