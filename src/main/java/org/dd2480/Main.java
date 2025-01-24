@@ -29,7 +29,7 @@ public class Main {
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
-                double distance = calculateDistanceBetween2Points(points[j], points[i]);
+                double distance = pointDistance(points[j], points[i]);
                 if (distance > 2 * radius)
                     return false;
             }
@@ -44,7 +44,7 @@ public class Main {
      * @param point2 a 2D point
      * @return distance between point1 and point2
      */
-    public static double calculateDistanceBetween2Points(Point2D point1, Point2D point2) {
+    public static double pointDistance(Point2D point1, Point2D point2) {
         double xDiff = point2.getX() - point1.getX();
         double yDiff = point2.getY() - point1.getY();
         double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
