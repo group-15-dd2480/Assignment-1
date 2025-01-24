@@ -38,7 +38,7 @@ public class Main {
 
     /**
      * 
-     * Function that corresponds to LIC 0
+     * Checks the distance between two 2D points
      * 
      * @param point1 a 2D point
      * @param point2 a 2D point
