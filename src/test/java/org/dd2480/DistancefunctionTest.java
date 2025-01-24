@@ -11,7 +11,7 @@ class DistancefunctionTest {
     @Test
     void distanceIsCorrectGivenTwoPoints() {
         Main.points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(2, 2) };
-        assertEquals(Math.sqrt(2), Main.calculateDistanceBetween2Points(Main.points[0], Main.points[1]));
+        assertEquals(Math.sqrt(2), Main.pointDistance(Main.points[0], Main.points[1]));
     }
 
 }
