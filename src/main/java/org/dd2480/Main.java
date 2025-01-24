@@ -98,6 +98,42 @@ public class Main {
     }
 
     /**
+     * 
+     * Function that corresponds to LIC 8
+     * 
+     * @param aPts   the number of consecutive points between the first and second
+     *               point (A_PTS)
+     * @param bPts   the number of consecutive points between the second and third
+     *               point (B_PTS)
+     * @param radius of the containing circle (RADIUS_1)
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points) that cannot be contained by
+     *         the circle of the specified radius, otherwise false
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code aPts} < 1</li>
+     *                                  <li>If {@code bPts} < 1</li>
+     *                                  <li>If {@code aPts} + {@code bPts} >
+     *                                  {@code Main.numPoints} - 3</li>
+     *                                  </ul>
+     */
+    public static boolean lic8(int aPts, int bPts, double radius) {
+        if (aPts < 1)
+            throw new IllegalArgumentException("A_PTS must be >= 1");
+        if (bPts < 1)
+            throw new IllegalArgumentException("B_PTS must be >= 1");
+        if (aPts + bPts > Main.numPoints - 3)
+            throw new IllegalArgumentException("A_PTS + B_PTS must be <= NUMPOINTS - 3");
+
+        for (int i = 0; i < Main.numPoints - 2 - aPts - bPts; i++)
+            if (!circleContainmentCheck(
+                    new Point2D[] { Main.points[i], Main.points[i + 1 + aPts], Main.points[i + 2 + aPts + bPts] },
+                    radius))
+                return true;
+        return false;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      * 
      * @param points an array of points representing the vertices of the triangle
