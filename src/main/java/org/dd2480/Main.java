@@ -13,12 +13,6 @@ public class Main {
      */
     public static Point2D[] points;
 
-    public static final double PI = 3.1415926535;
-    /**
-     * EPSILON: Deviation from PI in LICs 2,9
-     */
-    public static double EPSILON = 0.01;
-
     /**
      * 
      * Checks if a circle can enclose all points. It does this by checking that the
@@ -183,32 +177,31 @@ public class Main {
     /**
      * Calculates the angle between three points A, B, and C, where B is the vertex of the angle.
      * The function checks if the points are valid and calculates the angle using the dot product formula.
-     * If any of the points are invalid or the vectors are degenerate, the method will return -1.
+     * If any of the points are invalid or the vectors are degenerate, the method will throw IllegalArgumentException.
      *
-     * @param A the first point (Point2D) representing one side of the angle
-     * @param B the second point (Point2D) representing the vertex of the angle
-     * @param C the third point (Point2D) representing the other side of the angle
-     * @return the angle in radians between the vectors AB and BC, or -1 if the calculation is not possible
-     *         (e.g., when any point is the same, or when the vectors have zero magnitude)
-     * @throws IllegalArgumentException if any of the points is null
+     * @param pointA the first point (Point2D) representing one side of the angle
+     * @param pointB the second point (Point2D) representing the vertex of the angle
+     * @param pointC the third point (Point2D) representing the other side of the angle
+     * @return the angle in radians between the vectors BA and BC
+     * @throws IllegalArgumentException if any of the points is null, if pointA or pointC is the same as pointB or if the vectors have zero magnitude
      */
-    public static double calculateAngle(Point2D A,Point2D B,Point2D C) {
+    public static double calculateAngle(Point2D pointA,Point2D pointB,Point2D pointC) {
         // Check if angle is undefined or not
-        if (B.equals(A) || B.equals(C)){
+        if (pointB.equals(pointA) || pointB.equals(pointC)){
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
         }
         // Calculate magnitudes of the edges
-        double magAB = getVectorMagnitude(A,B);
-        double magBC = getVectorMagnitude(B,C);
+        double magAB = getVectorMagnitude(pointA,pointB);
+        double magBC = getVectorMagnitude(pointB,pointC);
         // Check if any magnitude is zero
         if (magAB == 0 || magBC == 0){
             throw new IllegalArgumentException("Magnitude of vectors cannot be zero.");
         }
         // Calculate & normalize the vectors AB & BC
-        Point2D BA = new Point2D.Double(A.getX()-B.getX(),A.getY()-B.getY());
-        Point2D BC = new Point2D.Double(C.getX()-B.getX(),C.getY()-B.getY());
+        Point2D vectorBA = new Point2D.Double(pointA.getX()-pointB.getX(),pointA.getY()-pointB.getY());
+        Point2D vectorBC = new Point2D.Double(pointC.getX()-pointB.getX(),pointC.getY()-pointB.getY());
         // Calculate the angle
-        double dotProduct = BA.getX()*BC.getX() + BA.getY()*BC.getY();
+        double dotProduct = vectorBA.getX()*vectorBC.getX() + vectorBA.getY()*vectorBC.getY();
         double cosAngle = dotProduct / (magAB * magBC);
         // Handle the cases where dot product is not within [-1,1]
         if (cosAngle > 1){
@@ -222,14 +215,17 @@ public class Main {
      * Calculates the magnitude (length) of the vector formed by two points A and B.
      * The magnitude is computed as the Euclidean distance between the two points.
      *
-     * @param A the first point (Point2D) representing one end of the vector
-     * @param B the second point (Point2D) representing the other end of the vector
+     * @param pointA the first point (Point2D) representing one end of the vector
+     * @param pointB the second point (Point2D) representing the other end of the vector
      * @return the magnitude of the vector formed by points A and B
      * @throws IllegalArgumentException if either of the points is null
      */
-    public static double getVectorMagnitude(Point2D A,Point2D B){
-        double x = A.getX()-B.getX();
-        double y = A.getY()-B.getY();
+    public static double getVectorMagnitude(Point2D pointA,Point2D pointB){
+        if (pointA == null || pointB == null){
+            throw new IllegalArgumentException("No points can be null.");
+        }
+        double x = pointA.getX()-pointB.getX();
+        double y = pointA.getY()-pointB.getY();
         return Math.sqrt(x*x + y*y);
     }
 
