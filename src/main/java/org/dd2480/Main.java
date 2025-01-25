@@ -14,10 +14,10 @@ public class Main {
     public static Point2D[] points;
 
     /**
-     * 
+     *
      * Checks if a circle can enclose all points. It does this by checking that the
      * distance between every point is less than the diameter of the circle.
-     * 
+     *
      * @param points an array of points
      * @param radius of the containing circle
      * @return true if a circle with the given radius can contain the points, false
@@ -37,24 +37,27 @@ public class Main {
     }
 
     /**
-     * 
+     *
      * Checks the distance between two 2D points
-     * 
+     *
      * @param point1 a 2D point
      * @param point2 a 2D point
      * @return distance between point1 and point2
+     * @throws IllegalArgumentException if any point is null
      */
     public static double pointDistance(Point2D point1, Point2D point2) {
+        if (point1 == null || point2 == null){
+            throw new IllegalArgumentException("No points can be null.");
+        }
         double xDiff = point2.getX() - point1.getX();
         double yDiff = point2.getY() - point1.getY();
-        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-        return distance;
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
     /**
-     * 
+     *
      * Function that corresponds to LIC 1
-     * 
+     *
      * @param radius of the containing circle
      * @return true iff there exists a set of three consecutive points that cannot
      *         be contained within (or on) a circle of the specified radius, false
@@ -72,9 +75,9 @@ public class Main {
     }
 
     /**
-     * 
+     *
      * Function that corresponds to LIC 4
-     * 
+     *
      * @param points array of points
      * @param qPts   number of consecutive points
      * @param quads  number of quadrants
@@ -109,9 +112,9 @@ public class Main {
     }
 
     /**
-     * 
+     *
      * Function that corresponds to LIC 8
-     * 
+     *
      * @param aPts   the number of consecutive points between the first and second
      *               point (A_PTS)
      * @param bPts   the number of consecutive points between the second and third
@@ -146,7 +149,7 @@ public class Main {
 
     /**
      * Calculates the area of a triangle given its three points.
-     * 
+     *
      * @param points an array of points representing the vertices of the triangle
      * @return the area of the triangle
      * @throws IllegalArgumentException
@@ -176,11 +179,11 @@ public class Main {
     }
 
     /**
-     * 
+     *
      * Calculates which of the four quadrants a point lies in.
      * When a point lies on an axis, it is considered to be in the quadrant with the
      * lowest number.
-     * 
+     *
      * @param point the point to check
      * @return Which quadrant the point lies in (1, 2, 3, or 4)q
      * @throws IllegalArgumentException
@@ -208,6 +211,44 @@ public class Main {
                 return 4;
         }
     }
+    /**
+     * Calculates the angle between three points A, B, and C, where B is the vertex of the angle.
+     * The function checks if the points are valid and calculates the angle using the dot product formula.
+     * If any of the points are invalid or the vectors are degenerate, the method will throw IllegalArgumentException.
+     *
+     * @param pointA the first point (Point2D) representing one side of the angle
+     * @param pointB the second point (Point2D) representing the vertex of the angle
+     * @param pointC the third point (Point2D) representing the other side of the angle
+     * @return the angle in radians between the vectors BA and BC
+     * @throws IllegalArgumentException if any of the points is null, if pointA or pointC is the same as pointB or if the vectors have zero magnitude
+     */
+    public static double calculateAngle(Point2D pointA,Point2D pointB,Point2D pointC) {
+        // Check if angle is undefined or not
+        if (pointB.equals(pointA) || pointB.equals(pointC)){
+            throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
+        }
+        // Calculate magnitudes of the edges
+        double magAB = pointDistance(pointA,pointB);
+        double magBC = pointDistance(pointB,pointC);
+        // Check if any magnitude is zero
+        if (magAB == 0 || magBC == 0){
+            throw new IllegalArgumentException("Magnitude of vectors cannot be zero.");
+        }
+        // Calculate & normalize the vectors AB & BC
+        Point2D vectorBA = new Point2D.Double(pointA.getX()-pointB.getX(),pointA.getY()-pointB.getY());
+        Point2D vectorBC = new Point2D.Double(pointC.getX()-pointB.getX(),pointC.getY()-pointB.getY());
+        // Calculate the angle
+        double dotProduct = vectorBA.getX()*vectorBC.getX() + vectorBA.getY()*vectorBC.getY();
+        double cosAngle = dotProduct / (magAB * magBC);
+        // Handle the cases where dot product is not within [-1,1]
+        if (cosAngle > 1){
+            cosAngle = 1;
+        } else if (cosAngle < -1){
+            cosAngle = -1;
+        }
+        return Math.acos(cosAngle);
+    }
+
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
