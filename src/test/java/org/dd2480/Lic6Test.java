@@ -10,13 +10,6 @@ import org.junit.jupiter.api.Test;
 class Lic6Test {
 
     @Test
-    void shouldReturnTrue_whenDistIsZero() {
-        Point2D point = new Point2D.Double(1, 1);
-        Point2D[] points = new Point2D[] { point, point, point };
-        assertEquals(true, Main.lic6(points, 3, 0), "should return true when dist = 0");
-    }
-
-    @Test
     void shouldReturnFalse_whenPointsAreClose() {
         Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(1.1, 1.1),
                 new Point2D.Double(1.2, 1.2) };

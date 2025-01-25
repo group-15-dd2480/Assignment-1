@@ -138,11 +138,6 @@ public class Main {
                 throw new IllegalArgumentException("Non-finite points are not allowed");
         }
 
-        // If the distance is zero then the points that form the line also fulfill the
-        // condition.
-        if (dist == 0)
-            return true;
-
         for (int i = 0; i < points.length - nPts + 1; i++) {
             Point2D first = points[i];
             Point2D last = points[i + nPts - 1];
@@ -150,7 +145,7 @@ public class Main {
             // If the first and the last point are the same, we care about the distance to
             // their center not the line.
             // Otherwise calculate the distance from the point to the line.
-            if (first.distanceSq(last) == 0) {
+            if (first.equals(last)) {
                 for (int j = i + 1; j < i + nPts - 1; j++) {
                     if (first.distance(points[j]) > dist) {
                         return true;
