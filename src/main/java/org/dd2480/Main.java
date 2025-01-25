@@ -37,7 +37,7 @@ public class Main {
      * @throws IllegalArgumentException if any point is null
      */
     public static double pointDistance(Point2D point1, Point2D point2) {
-        if (point1 == null || point2 == null){
+        if (point1 == null || point2 == null) {
             throw new IllegalArgumentException("No points can be null.");
         }
         double xDiff = point2.getX() - point1.getX();
@@ -139,6 +139,44 @@ public class Main {
     }
 
     /**
+     *
+     * Function that corresponds to LIC 13
+     *
+     * @param points  array of points
+     * @param aPts    the number of consecutive points between the first and second
+     *                point (A_PTS)
+     * @param bPts    the number of consecutive points between the second and third
+     *                point (B_PTS)
+     * @param radius1 of the circle that shall not contain the points (RADIUS_1)
+     * @param radius2 of the circle that shall contain the points (RADIUS_2)
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points) that cannot be contained by
+     *         the circle of the specified radius (RADIUS_1) AND there exists a
+     *         valid set of points that can be contained by the circle of the other
+     *         specified radius (RADIUS_2), otherwise false
+     * @throws IllegalArgumentException if {@code radius2} < 0
+     */
+    public static boolean lic13(Point2D[] points, int aPts, int bPts, double radius1, double radius2) {
+        if (radius2 < 0)
+            throw new IllegalArgumentException("RADIUS_2 must be >= 0");
+
+        if (points.length < 5)
+            return false;
+
+        // If there does not exist a set that cannot be contained by circle with
+        // RADIUS_1, the condition is false.
+        if (!lic8(points, aPts, bPts, radius1))
+            return false;
+
+        for (int i = 0; i < points.length - 2 - aPts - bPts; i++)
+            if (circleContainmentCheck(
+                    new Point2D[] { points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts] },
+                    radius2))
+                return true;
+        return false;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      *
      * @param points an array of points representing the vertices of the triangle
@@ -202,44 +240,50 @@ public class Main {
                 return 4;
         }
     }
+
     /**
-     * Calculates the angle between three points A, B, and C, where B is the vertex of the angle.
-     * The function checks if the points are valid and calculates the angle using the dot product formula.
-     * If any of the points are invalid or the vectors are degenerate, the method will throw IllegalArgumentException.
+     * Calculates the angle between three points A, B, and C, where B is the vertex
+     * of the angle.
+     * The function checks if the points are valid and calculates the angle using
+     * the dot product formula.
+     * If any of the points are invalid or the vectors are degenerate, the method
+     * will throw IllegalArgumentException.
      *
      * @param pointA the first point (Point2D) representing one side of the angle
      * @param pointB the second point (Point2D) representing the vertex of the angle
-     * @param pointC the third point (Point2D) representing the other side of the angle
+     * @param pointC the third point (Point2D) representing the other side of the
+     *               angle
      * @return the angle in radians between the vectors BA and BC
-     * @throws IllegalArgumentException if any of the points is null, if pointA or pointC is the same as pointB or if the vectors have zero magnitude
+     * @throws IllegalArgumentException if any of the points is null, if pointA or
+     *                                  pointC is the same as pointB or if the
+     *                                  vectors have zero magnitude
      */
-    public static double calculateAngle(Point2D pointA,Point2D pointB,Point2D pointC) {
+    public static double calculateAngle(Point2D pointA, Point2D pointB, Point2D pointC) {
         // Check if angle is undefined or not
-        if (pointB.equals(pointA) || pointB.equals(pointC)){
+        if (pointB.equals(pointA) || pointB.equals(pointC)) {
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
         }
         // Calculate magnitudes of the edges
-        double magAB = pointDistance(pointA,pointB);
-        double magBC = pointDistance(pointB,pointC);
+        double magAB = pointDistance(pointA, pointB);
+        double magBC = pointDistance(pointB, pointC);
         // Check if any magnitude is zero
-        if (magAB == 0 || magBC == 0){
+        if (magAB == 0 || magBC == 0) {
             throw new IllegalArgumentException("Magnitude of vectors cannot be zero.");
         }
         // Calculate & normalize the vectors AB & BC
-        Point2D vectorBA = new Point2D.Double(pointA.getX()-pointB.getX(),pointA.getY()-pointB.getY());
-        Point2D vectorBC = new Point2D.Double(pointC.getX()-pointB.getX(),pointC.getY()-pointB.getY());
+        Point2D vectorBA = new Point2D.Double(pointA.getX() - pointB.getX(), pointA.getY() - pointB.getY());
+        Point2D vectorBC = new Point2D.Double(pointC.getX() - pointB.getX(), pointC.getY() - pointB.getY());
         // Calculate the angle
-        double dotProduct = vectorBA.getX()*vectorBC.getX() + vectorBA.getY()*vectorBC.getY();
+        double dotProduct = vectorBA.getX() * vectorBC.getX() + vectorBA.getY() * vectorBC.getY();
         double cosAngle = dotProduct / (magAB * magBC);
         // Handle the cases where dot product is not within [-1,1]
-        if (cosAngle > 1){
+        if (cosAngle > 1) {
             cosAngle = 1;
-        } else if (cosAngle < -1){
+        } else if (cosAngle < -1) {
             cosAngle = -1;
         }
         return Math.acos(cosAngle);
     }
-
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
