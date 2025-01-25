@@ -76,6 +76,30 @@ public class Main {
 
     /**
      *
+     * Function that corresponds to LIC 2
+     *
+     * @param points array of points
+     * @param epsilon deviation from PI in LIC # 2 & 9
+     * @return true if there exists at least one set of three consecutive data points
+     * which form an angle that is not in the range of epsilon from pi
+     * @throws IllegalArgumentException if epsilon is not in the range: [0,pi]
+     *
+     */
+
+    public static boolean lic2(Point2D[] points, double epsilon){
+        if (epsilon<0 || epsilon>Math.PI){
+            throw new IllegalArgumentException("Invalid input for epsilon.");
+        }
+        for (int i=0; i<points.length -2; i++){
+            if (checkValidAngle(points[i],points[i+1],points[i+2],epsilon)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
      * Function that corresponds to LIC 4
      *
      * @param points array of points
@@ -247,6 +271,27 @@ public class Main {
             cosAngle = -1;
         }
         return Math.acos(cosAngle);
+    }
+    /**
+     * Checks whether the angle formed by three given points
+     * is not within the specified epsilon of a straight angle (π radians).
+     *
+     * @param point1 The first point.
+     * @param point2 The second point, which is the vertex of the angle.
+     * @param point3 The third point.
+     * @param epsilon The tolerance for the angle difference. Must be in the range [0, π].
+     * @return True if the angle is valid (not within epsilon of π), False otherwise.
+     * @throws IllegalArgumentException If any of the points is null.
+     */
+    public static boolean checkValidAngle(Point2D point1,Point2D point2,Point2D point3,double epsilon){
+        if (point1 == null || point2 == null || point3 == null){
+            throw new IllegalArgumentException("Points cannot be null.");
+        }
+        double angle = calculateAngle(point1,point2,point3);
+        if (angle != -1){
+            return !(Math.abs(angle - Math.PI) < epsilon);
+        }
+        return false;
     }
 
 
