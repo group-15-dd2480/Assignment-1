@@ -5,15 +5,6 @@ import java.awt.geom.Point2D;
 public class Main {
 
     /**
-     * NUMPOINTS: The number of planar data points.
-     */
-    public static int numPoints;
-    /**
-     * POINTS: Array containing the coordinates of data points.
-     */
-    public static Point2D[] points;
-
-    /**
      *
      * Checks if a circle can enclose all points. It does this by checking that the
      * distance between every point is less than the diameter of the circle.
@@ -64,11 +55,11 @@ public class Main {
      *         otherwise
      * @throws IllegalArgumentException if radius is negative
      */
-    public static boolean lic1(double radius) {
+    public static boolean lic1(Point2D[] points, double radius) {
         if (radius < 0)
             throw new IllegalArgumentException("Radius must be >= 0");
-        for (int i = 0; i < Main.numPoints - 2; i++)
-            if (!circleContainmentCheck(new Point2D[] { Main.points[i], Main.points[i + 1], Main.points[i + 2] },
+        for (int i = 0; i < points.length - 2; i++)
+            if (!circleContainmentCheck(new Point2D[] { points[i], points[i + 1], points[i + 2] },
                     radius))
                 return true;
         return false;
@@ -131,17 +122,17 @@ public class Main {
      *                                  {@code Main.numPoints} - 3</li>
      *                                  </ul>
      */
-    public static boolean lic8(int aPts, int bPts, double radius) {
+    public static boolean lic8(Point2D[] points, int aPts, int bPts, double radius) {
         if (aPts < 1)
             throw new IllegalArgumentException("A_PTS must be >= 1");
         if (bPts < 1)
             throw new IllegalArgumentException("B_PTS must be >= 1");
-        if (aPts + bPts > Main.numPoints - 3)
+        if (aPts + bPts > points.length - 3)
             throw new IllegalArgumentException("A_PTS + B_PTS must be <= NUMPOINTS - 3");
 
-        for (int i = 0; i < Main.numPoints - 2 - aPts - bPts; i++)
+        for (int i = 0; i < points.length - 2 - aPts - bPts; i++)
             if (!circleContainmentCheck(
-                    new Point2D[] { Main.points[i], Main.points[i + 1 + aPts], Main.points[i + 2 + aPts + bPts] },
+                    new Point2D[] { points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts] },
                     radius))
                 return true;
         return false;
