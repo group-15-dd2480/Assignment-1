@@ -61,6 +61,30 @@ public class Main {
                 return true;
         return false;
     }
+    /**
+     * Function that corresponds to LIC 2
+     *
+     * @param points  array of points
+     * @param epsilon deviation from PI in LIC # 2 & 9
+     * @return true if there exists at least one set of three consecutive data points
+     * which form an angle that is not in the range of epsilon from pi
+     *         false if number of points are less than 3 or the condition is not met
+     * @throws IllegalArgumentException if epsilon is not in the range: [0,pi)
+     */
+    public static boolean lic2(Point2D[] points, double epsilon) {
+        if (points.length < 3){
+            return false;
+        }
+        if (epsilon < 0 || epsilon >= Math.PI) {
+            throw new IllegalArgumentException("Invalid input for epsilon.");
+        }
+        for (int i = 0; i < points.length - 2; i++) {
+            if (checkValidAngle(points[i], points[i + 1], points[i + 2], epsilon)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Function that corresponds to LIC 4
@@ -129,6 +153,36 @@ public class Main {
                     new Point2D[]{points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts]},
                     radius))
                 return true;
+        return false;
+    }
+    /**
+     * Function that corresponds to LIC 9
+     *
+     * @param points array of points
+     * @param cPts the number of consecutive points between the first and second
+     *      *               point (C_PTS)
+     * @param dPts the number of consecutive points between the second and third
+     *      *               point (D_PTS)
+     * @param epsilon deviation from pi in LIC # 2 & 9
+     * @return true if there exists at least one set of three data points
+     * separated by exactly C_PTS and D_PTS consecutive intervening points, respectively,
+     * that form an angle such that: angle < (PI-EPSILON) or angle > (PI+EPSILON).
+     *
+     * @throws IllegalArgumentException when C_PTS is < 1 or D_PTS is < 1 or C_PTS + D_PTS > (NUMPOINTS - 3)
+     */
+    public static boolean lic9(Point2D[] points, int cPts, int dPts, double epsilon) {
+        if (cPts < 1)
+            throw new IllegalArgumentException("C_PTS must be >= 1");
+        if (dPts < 1)
+            throw new IllegalArgumentException("D_PTS must be >= 1");
+        if (cPts + dPts > points.length - 3)
+            throw new IllegalArgumentException("C_PTS + D_PTS must be <= NUMPOINTS - 3");
+
+        for (int i = 0; i < points.length - 2 - cPts - dPts; i++) {
+            if (checkValidAngle(points[i], points[i + 1 + cPts], points[i + 2 + cPts + dPts], epsilon))
+                return true;
+        }
+        // If number of points less than 5 or the condition is not met
         return false;
     }
 
@@ -233,27 +287,6 @@ public class Main {
             cosAngle = -1;
         }
         return Math.acos(cosAngle);
-    }
-
-    /**
-     * Function that corresponds to LIC 2
-     *
-     * @param points  array of points
-     * @param epsilon deviation from PI in LIC # 2 & 9
-     * @return true if there exists at least one set of three consecutive data points
-     * which form an angle that is not in the range of epsilon from pi
-     * @throws IllegalArgumentException if epsilon is not in the range: [0,pi)
-     */
-    public static boolean lic2(Point2D[] points, double epsilon) {
-        if (epsilon < 0 || epsilon >= Math.PI) {
-            throw new IllegalArgumentException("Invalid input for epsilon.");
-        }
-        for (int i = 0; i < points.length - 2; i++) {
-            if (checkValidAngle(points[i], points[i + 1], points[i + 2], epsilon)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

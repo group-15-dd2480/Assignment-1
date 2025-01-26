@@ -36,6 +36,15 @@ class Lic2Test {
         assertTrue(Main.lic2(points,Math.PI / 10)); // Valid epsilon
     }
     @Test
+    void shouldReturnFalse_whenLessThan3PointsGiven(){
+        // Test with less than 3 points
+        Point2D[] points = {
+                new Point2D.Double(0,0),
+                new Point2D.Double(1,1)
+        };
+        assertFalse(Main.lic2(points,Math.PI/10));
+    }
+    @Test
     void shouldReturnFalse_whenInvalidInput() {
         // Test with a valid epsilon value & incorrect input
         // Assuming numPoints and points are set up correctly
