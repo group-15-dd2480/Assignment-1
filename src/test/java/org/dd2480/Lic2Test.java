@@ -11,6 +11,8 @@ class Lic2Test {
 
     @Test
     void shouldThrowIllegalArgumentException_whenEpsilonNegative() {
+        Main.points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(2, 2), new Point2D.Double(3, 3)};
+        Main.numPoints = 3;
         // Test when epsilon negative
         assertThrows(IllegalArgumentException.class, () -> {
             Main.lic2(Main.points,-0.1); // Epsilon should be in the range [0, Math.PI]
@@ -18,6 +20,8 @@ class Lic2Test {
     }
     @Test
     void shouldThrowIllegalArgumentException_whenEpsilonGreaterThanPi() {
+        Main.points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(2, 2), new Point2D.Double(3, 3)};
+        Main.numPoints = 3;
         // Test with epsilon greater than Math.PI
         assertThrows(IllegalArgumentException.class, () -> {
             Main.lic2(Main.points,Math.PI + 0.1); // Epsilon should be in the range [0, Math.PI]
