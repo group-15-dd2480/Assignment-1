@@ -16,15 +16,16 @@ public class CalculateAngleTest {
         Point2D C = new Point2D.Double(1, 1);
 
         // Expecting IllegalArgumentException for null point
-        assertThrows(IllegalArgumentException.class, () -> Main.calculateAngle(A, B, C));
-    }@Test
+        assertThrows(IllegalArgumentException.class, () -> Main.calculateAngle(A, B, C),"Points cannot be null.");
+    }
+    @Test
     void shouldThrowIllegalArgumentException_whenSamePointsGiven() {
         Point2D pointA = new Point2D.Double(0, 0);
         Point2D pointB = new Point2D.Double(0, 0); // Same as A
         Point2D pointC = new Point2D.Double(1, 1);
 
         // Expecting IllegalArgumentException for undefined angle
-        assertThrows(IllegalArgumentException.class, () -> Main.calculateAngle(pointA, pointB, pointC));
+        assertThrows(IllegalArgumentException.class, () -> Main.calculateAngle(pointA, pointB, pointC),"Points cannot be the same. Angle is undefined.");
     }
     @Test
     void shouldReturnAngle_whenCorrectInput() {
