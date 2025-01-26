@@ -5,7 +5,6 @@ import java.awt.geom.Point2D;
 public class Main {
 
     /**
-     *
      * Checks if a circle can enclose all points. It does this by checking that the
      * distance between every point is less than the diameter of the circle.
      *
@@ -28,7 +27,6 @@ public class Main {
     }
 
     /**
-     *
      * Checks the distance between two 2D points
      *
      * @param point1 a 2D point
@@ -46,7 +44,6 @@ public class Main {
     }
 
     /**
-     *
      * Function that corresponds to LIC 1
      *
      * @param radius of the containing circle
@@ -66,7 +63,6 @@ public class Main {
     }
 
     /**
-     *
      * Function that corresponds to LIC 4
      *
      * @param points array of points
@@ -103,7 +99,80 @@ public class Main {
     }
 
     /**
-     *
+     * 
+     * Function that corresponds to LIC 6.
+     * 
+     * @param points array of points.
+     * @param nPts   number of consecutive points.
+     * @param dist   distance from the line connecting the first and last points.
+     * @return {@code true} iff there exists at least one set of {@code nPts}
+     *         consecutive points where at least one point is a distance greater
+     *         than {@code dist} from the line connecting the first and last points,
+     *         {@code false} otherwise.
+     *         If the first and last points overlap, the distance is calculated as
+     *         the distance from the first point.
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code points} is null</li>
+     *                                  <li>If {@code nPts} < 3 or {@code nPts} >
+     *                                  {@code points.length}</li>
+     *                                  <li>If {@code dist} < 0</li>
+     *                                  <li>If any point in {@code points} is
+     *                                  null</li>
+     *                                  <li>If any point in {@code points} has
+     *                                  coordinates that are NaN or infinite</li>
+     *                                  </ul>
+     */
+    public static boolean lic6(Point2D[] points, int nPts, double dist) {
+        if (points == null)
+            throw new IllegalArgumentException("points cannot be null");
+        if (nPts < 3 || nPts > points.length)
+            throw new IllegalArgumentException("expects 3 <= nPts <= number of points");
+        if (dist < 0)
+            throw new IllegalArgumentException("dist must be >= 0");
+
+        for (Point2D point : points) {
+            if (point == null)
+                throw new IllegalArgumentException("Null points are not allowed");
+            if (!Double.isFinite(point.getX()) || !Double.isFinite(point.getY()))
+                throw new IllegalArgumentException("Non-finite points are not allowed");
+        }
+
+        for (int i = 0; i < points.length - nPts + 1; i++) {
+            Point2D first = points[i];
+            Point2D last = points[i + nPts - 1];
+
+            // If the first and the last point are the same, we care about the distance to
+            // their center not the line.
+            // Otherwise calculate the distance from the point to the line.
+            if (first.equals(last)) {
+                for (int j = i + 1; j < i + nPts - 1; j++) {
+                    if (first.distance(points[j]) > dist) {
+                        return true;
+                    }
+                }
+            } else {
+                for (int j = i + 1; j < i + nPts - 1; j++) {
+                    Point2D point = points[j];
+                    double numerator = Math.abs((last.getY() - first.getY()) * point.getX()
+                            - (last.getX() - first.getX()) * point.getY() + last.getX() * first.getY()
+                            - last.getY() * first.getX());
+                    double denominator = Math
+                            .sqrt(Math.pow(last.getY() - first.getY(), 2) + Math.pow(last.getX() - first.getX(), 2));
+                    double distance = numerator / denominator;
+
+                    if (distance > dist) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 
      * Function that corresponds to LIC 8
      *
      * @param aPts   the number of consecutive points between the first and second
@@ -208,7 +277,6 @@ public class Main {
     }
 
     /**
-     *
      * Calculates which of the four quadrants a point lies in.
      * When a point lies on an axis, it is considered to be in the quadrant with the
      * lowest number.
@@ -259,6 +327,9 @@ public class Main {
      *                                  vectors have zero magnitude
      */
     public static double calculateAngle(Point2D pointA, Point2D pointB, Point2D pointC) {
+        if (pointA == null || pointB == null || pointC == null) {
+            throw new IllegalArgumentException("Points cannot be null.");
+        }
         // Check if angle is undefined or not
         if (pointB.equals(pointA) || pointB.equals(pointC)) {
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
@@ -283,6 +354,49 @@ public class Main {
             cosAngle = -1;
         }
         return Math.acos(cosAngle);
+    }
+
+    /**
+     * Function that corresponds to LIC 2
+     *
+     * @param points  array of points
+     * @param epsilon deviation from PI in LIC # 2 & 9
+     * @return true if there exists at least one set of three consecutive data
+     *         points
+     *         which form an angle that is not in the range of epsilon from pi
+     * @throws IllegalArgumentException if epsilon is not in the range: [0,pi)
+     */
+    public static boolean lic2(Point2D[] points, double epsilon) {
+        if (epsilon < 0 || epsilon >= Math.PI) {
+            throw new IllegalArgumentException("Invalid input for epsilon.");
+        }
+        for (int i = 0; i < points.length - 2; i++) {
+            if (checkValidAngle(points[i], points[i + 1], points[i + 2], epsilon)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the angle formed by three given points
+     * is not within the specified epsilon of a straight angle (π radians).
+     *
+     * @param point1  The first point.
+     * @param point2  The second point, which is the vertex of the angle.
+     * @param point3  The third point.
+     * @param epsilon The tolerance for the angle difference. Must be in the range
+     *                [0, π).
+     * @return True if the angle is valid (bigger than pi + epsilon or smaller than
+     *         pi - epsilon), False otherwise.
+     * @throws IllegalArgumentException If any of the points is null.
+     */
+    public static boolean checkValidAngle(Point2D point1, Point2D point2, Point2D point3, double epsilon) {
+        if (point1 == null || point2 == null || point3 == null) {
+            throw new IllegalArgumentException("Points cannot be null.");
+        }
+        double angle = calculateAngle(point1, point2, point3);
+        return !(Math.abs(angle - Math.PI) <= epsilon);
     }
 
     public static void main(String[] args) {
