@@ -206,6 +206,9 @@ public class Main {
      * @throws IllegalArgumentException if any of the points is null, if pointA or pointC is the same as pointB or if the vectors have zero magnitude
      */
     public static double calculateAngle(Point2D pointA, Point2D pointB, Point2D pointC) {
+        if (pointA == null || pointB == null || pointC == null){
+            throw new IllegalArgumentException("Points cannot be null.");
+        }
         // Check if angle is undefined or not
         if (pointB.equals(pointA) || pointB.equals(pointC)) {
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
@@ -269,10 +272,7 @@ public class Main {
             throw new IllegalArgumentException("Points cannot be null.");
         }
         double angle = calculateAngle(point1, point2, point3);
-        if (angle != -1) {
-            return !(Math.abs(angle - Math.PI) <= epsilon);
-        }
-        return false;
+        return !(Math.abs(angle - Math.PI) <= epsilon);
     }
 
 

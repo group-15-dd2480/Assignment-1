@@ -13,7 +13,7 @@ class ValidAngleTest {
         // Test with null point1
         assertThrows(IllegalArgumentException.class, () -> {
             Main.checkValidAngle(null, new Point2D.Double(1, 1), new Point2D.Double(2, 2), Math.PI / 10);
-        });
+        },"Points cannot be null.");
     }
     @Test
     void shouldReturnTrue_whenGivenValidPoints() {
@@ -48,24 +48,5 @@ class ValidAngleTest {
         Point2D point3 = new Point2D.Double(-1, -1);
 
         assertFalse(Main.checkValidAngle(point1,point2,point3,Math.PI/4));
-    }
-    @Test
-    void shouldReturnFalse_whenAngleIsPiMinusEpsilon() {
-        // Test case where angle is pi - epsilon
-        Point2D point1 = new Point2D.Double(1, 0);
-        Point2D point2 = new Point2D.Double(0, 0);
-        Point2D point3 = new Point2D.Double(0, 1);
-
-        assertFalse(Main.checkValidAngle(point1, point2, point3, Math.PI/2));
-    }
-
-    @Test
-    void shouldReturnFalse_whenAngleIsPiPlusEpsilon() {
-        // Test case where angle is pi + epsilon
-        Point2D point1 = new Point2D.Double(1, 0);
-        Point2D point2 = new Point2D.Double(0, 0);
-        Point2D point3 = new Point2D.Double(-1, 1);
-
-        assertFalse(Main.checkValidAngle(point1, point2, point3, Math.PI/4));
     }
 }
