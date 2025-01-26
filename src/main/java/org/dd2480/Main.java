@@ -126,6 +126,8 @@ public class Main {
     public static boolean lic6(Point2D[] points, int nPts, double dist) {
         if (points == null)
             throw new IllegalArgumentException("points cannot be null");
+        if (points.length < 3)
+            return false;
         if (nPts < 3 || nPts > points.length)
             throw new IllegalArgumentException("expects 3 <= nPts <= number of points");
         if (dist < 0)
@@ -192,6 +194,8 @@ public class Main {
      *                                  </ul>
      */
     public static boolean lic8(Point2D[] points, int aPts, int bPts, double radius) {
+        if (points.length < 5)
+            return false;
         if (aPts < 1)
             throw new IllegalArgumentException("A_PTS must be >= 1");
         if (bPts < 1)
