@@ -208,6 +208,44 @@ public class Main {
     }
 
     /**
+     *
+     * Function that corresponds to LIC 13
+     *
+     * @param points  array of points
+     * @param aPts    the number of consecutive points between the first and second
+     *                point (A_PTS)
+     * @param bPts    the number of consecutive points between the second and third
+     *                point (B_PTS)
+     * @param radius1 of the circle that shall not contain the points (RADIUS_1)
+     * @param radius2 of the circle that shall contain the points (RADIUS_2)
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points) that cannot be contained by
+     *         the circle of the specified radius (RADIUS_1) AND there exists a
+     *         valid set of points that can be contained by the circle of the other
+     *         specified radius (RADIUS_2), otherwise false
+     * @throws IllegalArgumentException if {@code radius2} < 0
+     */
+    public static boolean lic13(Point2D[] points, int aPts, int bPts, double radius1, double radius2) {
+        if (radius2 < 0)
+            throw new IllegalArgumentException("RADIUS_2 must be >= 0");
+
+        if (points.length < 5)
+            return false;
+
+        // If there does not exist a set that cannot be contained by circle with
+        // RADIUS_1, the condition is false.
+        if (!lic8(points, aPts, bPts, radius1))
+            return false;
+
+        for (int i = 0; i < points.length - 2 - aPts - bPts; i++)
+            if (circleContainmentCheck(
+                    new Point2D[] { points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts] },
+                    radius2))
+                return true;
+        return false;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      *
      * @param points an array of points representing the vertices of the triangle
