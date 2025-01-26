@@ -33,5 +33,21 @@ class ValidAngleTest {
 
         assertFalse(Main.checkValidAngle(point1, point2, point3, Math.PI)); // Should be false since angle is close to Pi
     }
+    @Test
+    void shouldReturnFalse_whenAngleIsPIMinusEpsilon(){
+        Point2D point1 = new Point2D.Double(1, 0);
+        Point2D point2 = new Point2D.Double(0, 0);
+        Point2D point3 = new Point2D.Double(0, 1);
+
+        assertFalse(Main.checkValidAngle(point1,point2,point3,Math.PI/2));
+    }
+    @Test
+    void shouldReturnFalse_whenAngleIsPIPlusEpsilon(){
+        Point2D point1 = new Point2D.Double(1, 0);
+        Point2D point2 = new Point2D.Double(0, 0);
+        Point2D point3 = new Point2D.Double(-1, -1);
+
+        assertFalse(Main.checkValidAngle(point1,point2,point3,Math.PI/4));
+    }
 
 }

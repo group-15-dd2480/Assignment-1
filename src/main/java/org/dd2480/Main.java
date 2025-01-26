@@ -279,8 +279,8 @@ public class Main {
      * @param point1 The first point.
      * @param point2 The second point, which is the vertex of the angle.
      * @param point3 The third point.
-     * @param epsilon The tolerance for the angle difference. Must be in the range [0, π].
-     * @return True if the angle is valid (not within epsilon of π), False otherwise.
+     * @param epsilon The tolerance for the angle difference. Must be in the range [0, π).
+     * @return True if the angle is valid (bigger than pi + epsilon or smaller than pi - epsilon), False otherwise.
      * @throws IllegalArgumentException If any of the points is null.
      */
     public static boolean checkValidAngle(Point2D point1,Point2D point2,Point2D point3,double epsilon){
@@ -289,7 +289,7 @@ public class Main {
         }
         double angle = calculateAngle(point1,point2,point3);
         if (angle != -1){
-            return !(Math.abs(angle - Math.PI) < epsilon);
+            return !(Math.abs(angle - Math.PI) <= epsilon);
         }
         return false;
     }
