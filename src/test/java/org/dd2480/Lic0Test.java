@@ -24,11 +24,9 @@ class Lic0Test {
     }
 
     @Test
-    void shouldThrowIllegalArgumentException_whenLengthIsNegative() {
-        Point2D[] points = {};
-
-        assertThrows(IllegalArgumentException.class, () -> Main.circleContainmentCheck(points, -1),
-                "a negative length cannot exist");
+    void shouldThrowIllegalArgumentException_whenAnyPointNull() {
+        Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(2, 2) };
+        assertThrows(IllegalArgumentException.class, () -> Main.lic0(points, -1));
     }
 
 }

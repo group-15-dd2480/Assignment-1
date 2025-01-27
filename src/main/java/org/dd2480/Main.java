@@ -29,7 +29,7 @@ public class Main {
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
-                double distance = calculateDistanceBetween2Points(points[j], points[i]);
+                double distance = pointDistance(points[j], points[i]);
                 if (distance > 2 * radius)
                     return false;
             }
@@ -37,18 +37,20 @@ public class Main {
     }
 
     /**
-     * 
-     * Function that corresponds to LIC 0
-     * 
+     * Checks the distance between two 2D points
+     *
      * @param point1 a 2D point
      * @param point2 a 2D point
      * @return distance between point1 and point2
+     * @throws IllegalArgumentException if any point is null
      */
-    public static double calculateDistanceBetween2Points(Point2D point1, Point2D point2) {
+    public static double pointDistance(Point2D point1, Point2D point2) {
+        if (point1 == null || point2 == null) {
+            throw new IllegalArgumentException("No points can be null.");
+        }
         double xDiff = point2.getX() - point1.getX();
         double yDiff = point2.getY() - point1.getY();
-        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-        return distance;
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
     /**
@@ -66,7 +68,7 @@ public class Main {
             throw new IllegalArgumentException("Length must be >= 0");
         for (int i = 0; i < points.length - 1; i++) {
             for (int j = i + 1; j < points.length; j++) {
-                if (calculateDistanceBetween2Points(points[j], points[i]) > LENGTH1)
+                if (pointDistance(points[j], points[i]) > LENGTH1)
                     return true;
             }
         }
