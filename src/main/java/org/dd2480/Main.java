@@ -246,6 +246,9 @@ public class Main {
      * @throws IllegalArgumentException when C_PTS is < 1 or D_PTS is < 1 or C_PTS + D_PTS > (NUMPOINTS - 3)
      */
     public static boolean lic9(Point2D[] points, int cPts, int dPts, double epsilon) {
+        if (points.length < 5){
+            return false;
+        }
         if (cPts < 1)
             throw new IllegalArgumentException("C_PTS must be >= 1");
         if (dPts < 1)
