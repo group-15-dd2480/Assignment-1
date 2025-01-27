@@ -12,13 +12,19 @@ class Lic9Test {
     void shouldThrowIllegalArgumentException_whenGivenInvalidInputs() {
         Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(-1, -1), new Point2D.Double(0, -1),
                 new Point2D.Double(-1, 0) };
+        Point2D[] points2 = new Point2D[] {
+                new Point2D.Double(1, 0),
+                new Point2D.Double(1, 1),
+                new Point2D.Double(0, 0),
+                new Point2D.Double(1, 1),
+                new Point2D.Double(1,0)
+        };
 
-        assertThrows(IllegalArgumentException.class, () -> Main.lic9(points, 0, 1, Math.PI/10),
+        assertThrows(IllegalArgumentException.class, () -> Main.lic9(points2, 0, 1, Math.PI/10),
                 "Invalid input: C_PTS is < 1");
-        assertThrows(IllegalArgumentException.class, () -> Main.lic9(points, 1, 0, Math.PI/10),
+        assertThrows(IllegalArgumentException.class, () -> Main.lic9(points2, 1, 0, Math.PI/10),
                 "Invalid input: D_PTS is < 1");
-        assertThrows(IllegalArgumentException.class, () -> Main.lic9(points, 1, 1, Math.PI/10),
-                "Invalid input: C_PTS + D_PTS > (NUMPOINTS - 3)");
+        assertFalse(Main.lic9(points, 1, 1, Math.PI/10),"Number of points < 5");
     }
     @Test
     void shouldReturnTrue_whenCorrectInputGiven(){
