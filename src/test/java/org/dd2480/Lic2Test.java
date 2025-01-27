@@ -13,7 +13,7 @@ class Lic2Test {
         Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(2, 2), new Point2D.Double(3, 3)};
         // Test when epsilon negative
         assertThrows(IllegalArgumentException.class, () -> {
-            Main.lic2(points,-0.1); // Epsilon should be in the range [0, Math.PI)
+            Main.lic2( points,-0.1); // Epsilon should be in the range [0, Math.PI)
         },"Invalid input for epsilon.");
     }
     @Test
@@ -34,6 +34,15 @@ class Lic2Test {
                 new Point2D.Double(1, 1)
         };
         assertTrue(Main.lic2(points,Math.PI / 10)); // Valid epsilon
+    }
+    @Test
+    void shouldReturnFalse_whenLessThan3PointsGiven(){
+        // Test with less than 3 points
+        Point2D[] points = {
+                new Point2D.Double(0,0),
+                new Point2D.Double(1,1)
+        };
+        assertFalse(Main.lic2(points,Math.PI/10));
     }
     @Test
     void shouldReturnFalse_whenInvalidInput() {
