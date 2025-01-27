@@ -459,6 +459,19 @@ public class Main {
         double angle = calculateAngle(point1, point2, point3);
         return !(Math.abs(angle - Math.PI) <= epsilon);
     }
+    /**
+     *
+     * @param point1 first point
+     * @param point2 second point
+     * @return true if x-coordinate of the second point is less than the first point
+     * @throws IllegalArgumentException if any point is null
+     */
+    public static boolean checkForXDrop(Point2D point1, Point2D point2){
+        if (point1 == null || point2 == null){
+            throw new IllegalArgumentException("No points can be null");
+        }
+        return point2.getX()-point1.getX() < 0;
+    }
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
