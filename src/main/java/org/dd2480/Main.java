@@ -308,6 +308,31 @@ public class Main {
         // If number of points less than 5 or the condition is not met
         return false;
     }
+    /**
+     *
+     * Function that corresponds to LIC 11
+     *
+     * @param points array of points
+     * @param gPts no of points separating the consecutive points
+     * @return true if there exists at least one set of two data points, (X[i],Y[i]) and (X[j],Y[j]), separated by
+     * exactly gPts consecutive intervening points, such that X[j] - X[i] < 0. (where i < j )
+     *         false if number of points are less than 3 or condition is not met
+     * @throws IllegalArgumentException if gPts is invalid
+     */
+    public static boolean lic11(Point2D[] points, int gPts) {
+        if (points.length < 3){
+            return false;
+        }
+        if (gPts < 1)
+            throw new IllegalArgumentException("gPts must be >= 1");
+        if (gPts > points.length-2)
+            throw new IllegalArgumentException("gPts must be <= NUMPOINTS - 2");
+        for (int i = 0; i < points.length - 1 - gPts; i++) {
+            if (checkForXDrop(points[i], points[i + 1 + gPts]))
+                return true;
+        }
+        return false;
+    }
 
     /**
      *
