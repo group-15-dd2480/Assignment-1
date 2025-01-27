@@ -11,7 +11,7 @@ public class Main {
      * @param points an array of points
      * @param radius of the containing circle
      * @return true if a circle with the given radius can contain the points, false
-     * otherwise
+     *         otherwise
      * @throws IllegalArgumentException if radius is negative
      */
     public static boolean circleContainmentCheck(Point2D[] points, double radius) {
@@ -48,15 +48,15 @@ public class Main {
      *
      * @param radius of the containing circle
      * @return true iff there exists a set of three consecutive points that cannot
-     * be contained within (or on) a circle of the specified radius, false
-     * otherwise
+     *         be contained within (or on) a circle of the specified radius, false
+     *         otherwise
      * @throws IllegalArgumentException if radius is negative
      */
     public static boolean lic1(Point2D[] points, double radius) {
         if (radius < 0)
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 2; i++)
-            if (!circleContainmentCheck(new Point2D[]{points[i], points[i + 1], points[i + 2]},
+            if (!circleContainmentCheck(new Point2D[] { points[i], points[i + 1], points[i + 2] },
                     radius))
                 return true;
         return false;
@@ -72,11 +72,11 @@ public class Main {
      * @throws IllegalArgumentException if epsilon is not in the range: [0,pi)
      */
     public static boolean lic2(Point2D[] points, double epsilon) {
-        if (points.length < 3){
-            return false;
-        }
         if (epsilon < 0 || epsilon >= Math.PI) {
             throw new IllegalArgumentException("Invalid input for epsilon.");
+        }
+        if (points.length < 3){
+            return false;
         }
         for (int i = 0; i < points.length - 2; i++) {
             if (checkValidAngle(points[i], points[i + 1], points[i + 2], epsilon)) {
@@ -93,9 +93,9 @@ public class Main {
      * @param qPts   number of consecutive points
      * @param quads  number of quadrants
      * @return {@code true} iff there exists at least one set of {@code qPts}
-     * consecutive
-     * points that lie in more than {@code quads} quadrants, {@code false}
-     * otherwise
+     *         consecutive
+     *         points that lie in more than {@code quads} quadrants, {@code false}
+     *         otherwise
      */
     public static boolean lic4(Point2D[] points, int qPts, int quads) {
         if (qPts < 2 || qPts > points.length)
@@ -123,6 +123,80 @@ public class Main {
     }
 
     /**
+     * 
+     * Function that corresponds to LIC 6.
+     * 
+     * @param points array of points.
+     * @param nPts   number of consecutive points.
+     * @param dist   distance from the line connecting the first and last points.
+     * @return {@code true} iff there exists at least one set of {@code nPts}
+     *         consecutive points where at least one point is a distance greater
+     *         than {@code dist} from the line connecting the first and last points,
+     *         {@code false} otherwise.
+     *         If the first and last points overlap, the distance is calculated as
+     *         the distance from the first point.
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code points} is null</li>
+     *                                  <li>If {@code nPts} < 3 or {@code nPts} >
+     *                                  {@code points.length}</li>
+     *                                  <li>If {@code dist} < 0</li>
+     *                                  <li>If any point in {@code points} is
+     *                                  null</li>
+     *                                  <li>If any point in {@code points} has
+     *                                  coordinates that are NaN or infinite</li>
+     *                                  </ul>
+     */
+    public static boolean lic6(Point2D[] points, int nPts, double dist) {
+        if (points == null)
+            throw new IllegalArgumentException("points cannot be null");
+        if (nPts < 3 || nPts > points.length)
+            throw new IllegalArgumentException("expects 3 <= nPts <= number of points");
+        if (dist < 0)
+            throw new IllegalArgumentException("dist must be >= 0");
+
+        for (Point2D point : points) {
+            if (point == null)
+                throw new IllegalArgumentException("Null points are not allowed");
+            if (!Double.isFinite(point.getX()) || !Double.isFinite(point.getY()))
+                throw new IllegalArgumentException("Non-finite points are not allowed");
+        }
+
+        for (int i = 0; i < points.length - nPts + 1; i++) {
+            Point2D first = points[i];
+            Point2D last = points[i + nPts - 1];
+
+            // If the first and the last point are the same, we care about the distance to
+            // their center not the line.
+            // Otherwise calculate the distance from the point to the line.
+            if (first.equals(last)) {
+                for (int j = i + 1; j < i + nPts - 1; j++) {
+                    if (first.distance(points[j]) > dist) {
+                        return true;
+                    }
+                }
+            } else {
+                for (int j = i + 1; j < i + nPts - 1; j++) {
+                    Point2D point = points[j];
+                    double numerator = Math.abs((last.getY() - first.getY()) * point.getX()
+                            - (last.getX() - first.getX()) * point.getY() + last.getX() * first.getY()
+                            - last.getY() * first.getX());
+                    double denominator = Math
+                            .sqrt(Math.pow(last.getY() - first.getY(), 2) + Math.pow(last.getX() - first.getX(), 2));
+                    double distance = numerator / denominator;
+
+                    if (distance > dist) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 
      * Function that corresponds to LIC 8
      *
      * @param aPts   the number of consecutive points between the first and second
@@ -131,14 +205,15 @@ public class Main {
      *               point (B_PTS)
      * @param radius of the containing circle (RADIUS_1)
      * @return true iff there exists a valid set of points (separated by the
-     * specified number of consecutive points) that cannot be contained by
-     * the circle of the specified radius, otherwise false
-     * @throws IllegalArgumentException <ul>
-     *                                                                   <li>If {@code aPts} < 1</li>
-     *                                                                   <li>If {@code bPts} < 1</li>
-     *                                                                   <li>If {@code aPts} + {@code bPts} >
-     *                                                                   {@code Main.numPoints} - 3</li>
-     *                                                                   </ul>
+     *         specified number of consecutive points) that cannot be contained by
+     *         the circle of the specified radius, otherwise false
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code aPts} < 1</li>
+     *                                  <li>If {@code bPts} < 1</li>
+     *                                  <li>If {@code aPts} + {@code bPts} >
+     *                                  {@code Main.numPoints} - 3</li>
+     *                                  </ul>
      */
     public static boolean lic8(Point2D[] points, int aPts, int bPts, double radius) {
         if (aPts < 1)
@@ -150,7 +225,7 @@ public class Main {
 
         for (int i = 0; i < points.length - 2 - aPts - bPts; i++)
             if (!circleContainmentCheck(
-                    new Point2D[]{points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts]},
+                    new Point2D[] { points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts] },
                     radius))
                 return true;
         return false;
@@ -187,16 +262,55 @@ public class Main {
     }
 
     /**
+     *
+     * Function that corresponds to LIC 13
+     *
+     * @param points  array of points
+     * @param aPts    the number of consecutive points between the first and second
+     *                point (A_PTS)
+     * @param bPts    the number of consecutive points between the second and third
+     *                point (B_PTS)
+     * @param radius1 of the circle that shall not contain the points (RADIUS_1)
+     * @param radius2 of the circle that shall contain the points (RADIUS_2)
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points) that cannot be contained by
+     *         the circle of the specified radius (RADIUS_1) AND there exists a
+     *         valid set of points that can be contained by the circle of the other
+     *         specified radius (RADIUS_2), otherwise false
+     * @throws IllegalArgumentException if {@code radius2} < 0
+     */
+    public static boolean lic13(Point2D[] points, int aPts, int bPts, double radius1, double radius2) {
+        if (radius2 < 0)
+            throw new IllegalArgumentException("RADIUS_2 must be >= 0");
+
+        if (points.length < 5)
+            return false;
+
+        // If there does not exist a set that cannot be contained by circle with
+        // RADIUS_1, the condition is false.
+        if (!lic8(points, aPts, bPts, radius1))
+            return false;
+
+        for (int i = 0; i < points.length - 2 - aPts - bPts; i++)
+            if (circleContainmentCheck(
+                    new Point2D[] { points[i], points[i + 1 + aPts], points[i + 2 + aPts + bPts] },
+                    radius2))
+                return true;
+        return false;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      *
      * @param points an array of points representing the vertices of the triangle
      * @return the area of the triangle
-     * @throws IllegalArgumentException <ul>
-     *                                                                   <li>If the number of points is not 3</li>
-     *                                                                   <li>If any point is null</li>
-     *                                                                   <li>If any point has coordinates that are
-     *                                                                   NaN or infinite</li>
-     *                                                                   </ul>
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If the number of points is not 3</li>
+     *                                  <li>If any point is null</li>
+     *                                  <li>If any point has coordinates that are
+     *                                  NaN or infinite</li>
+     *                                  </ul>
      */
     public static double triangleArea(Point2D[] points) {
         if (points.length != 3)
@@ -223,11 +337,12 @@ public class Main {
      *
      * @param point the point to check
      * @return Which quadrant the point lies in (1, 2, 3, or 4)q
-     * @throws IllegalArgumentException <ul>
-     *                                                                   <li>If the point is null</li>
-     *                                                                   <li>If the point has coordinates that are
-     *                                                                   NaN or infinite</li>
-     *                                                                   </ul>
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If the point is null</li>
+     *                                  <li>If the point has coordinates that are
+     *                                  NaN or infinite</li>
+     *                                  </ul>
      */
     public static int quadrant(Point2D point) {
         if (point == null)
@@ -249,18 +364,24 @@ public class Main {
     }
 
     /**
-     * Calculates the angle between three points A, B, and C, where B is the vertex of the angle.
-     * The function checks if the points are valid and calculates the angle using the dot product formula.
-     * If any of the points are invalid or the vectors are degenerate, the method will throw IllegalArgumentException.
+     * Calculates the angle between three points A, B, and C, where B is the vertex
+     * of the angle.
+     * The function checks if the points are valid and calculates the angle using
+     * the dot product formula.
+     * If any of the points are invalid or the vectors are degenerate, the method
+     * will throw IllegalArgumentException.
      *
      * @param pointA the first point (Point2D) representing one side of the angle
      * @param pointB the second point (Point2D) representing the vertex of the angle
-     * @param pointC the third point (Point2D) representing the other side of the angle
+     * @param pointC the third point (Point2D) representing the other side of the
+     *               angle
      * @return the angle in radians between the vectors BA and BC
-     * @throws IllegalArgumentException if any of the points is null, if pointA or pointC is the same as pointB or if the vectors have zero magnitude
+     * @throws IllegalArgumentException if any of the points is null, if pointA or
+     *                                  pointC is the same as pointB or if the
+     *                                  vectors have zero magnitude
      */
     public static double calculateAngle(Point2D pointA, Point2D pointB, Point2D pointC) {
-        if (pointA == null || pointB == null || pointC == null){
+        if (pointA == null || pointB == null || pointC == null) {
             throw new IllegalArgumentException("Points cannot be null.");
         }
         // Check if angle is undefined or not
@@ -296,8 +417,10 @@ public class Main {
      * @param point1  The first point.
      * @param point2  The second point, which is the vertex of the angle.
      * @param point3  The third point.
-     * @param epsilon The tolerance for the angle difference. Must be in the range [0, π).
-     * @return True if the angle is valid (bigger than pi + epsilon or smaller than pi - epsilon), False otherwise.
+     * @param epsilon The tolerance for the angle difference. Must be in the range
+     *                [0, π).
+     * @return True if the angle is valid (bigger than pi + epsilon or smaller than
+     *         pi - epsilon), False otherwise.
      * @throws IllegalArgumentException If any of the points is null.
      */
     public static boolean checkValidAngle(Point2D point1, Point2D point2, Point2D point3, double epsilon) {
@@ -307,7 +430,6 @@ public class Main {
         double angle = calculateAngle(point1, point2, point3);
         return !(Math.abs(angle - Math.PI) <= epsilon);
     }
-
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
