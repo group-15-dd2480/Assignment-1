@@ -17,10 +17,10 @@ class Lic11Test {
         };
         assertThrows(IllegalArgumentException.class, () -> {
             Main.lic11(points,0);
-        },"Invalid G_PTS: less than 1");
+        },"Invalid gPts: less than 1");
         assertThrows(IllegalArgumentException.class, () -> {
             Main.lic11(points,2);
-        },"Invalid G_PTS: bigger than NUM_POINTS - 2");
+        },"Invalid gPts: bigger than NUM_POINTS - 2");
     }
     @Test
     void shouldReturnTrue_whenCorrectInput(){
