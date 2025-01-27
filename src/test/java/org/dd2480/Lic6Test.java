@@ -32,8 +32,8 @@ class Lic6Test {
 
     @Test
     void throwsWhenNptsIsInvalidRange() {
-        Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(-1, -1) };
-        assertThrows(IllegalArgumentException.class, () -> Main.lic6(points, 3, 1),
+        Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(-1, -1), new Point2D.Double(0, -1), };
+        assertThrows(IllegalArgumentException.class, () -> Main.lic6(points, 4, 1),
                 "should throw an exception when qPts is > points.length");
         assertThrows(IllegalArgumentException.class, () -> Main.lic6(points, 2, 1),
                 "should throw an exception when qPts is < 3");
@@ -47,19 +47,19 @@ class Lic6Test {
 
     @Test
     void throwsWhenPointsContainsNull() {
-        Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), null };
+        Point2D[] points = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(1, 1), null };
         assertThrows(IllegalArgumentException.class, () -> Main.lic6(points, 3, 1),
                 "should throw an exception when points contains null");
     }
 
     @Test
     void throwsWhenPointsContainInvalidCoordinates() {
-        Point2D[] nanPoints = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(Double.NaN, 1) };
+        Point2D[] nanPoints = new Point2D[] { new Point2D.Double(1, 1), new Point2D.Double(Double.NaN, 1), new Point2D.Double(1, 1) };
         assertThrows(IllegalArgumentException.class, () -> Main.lic6(nanPoints, 3, 1),
                 "should throw an exception when points contain NaN");
 
         Point2D[] infPoints = new Point2D[] { new Point2D.Double(1, 1),
-                new Point2D.Double(1, Double.POSITIVE_INFINITY) };
+                new Point2D.Double(1, Double.POSITIVE_INFINITY), new Point2D.Double(1, 1) };
         assertThrows(IllegalArgumentException.class, () -> Main.lic6(infPoints, 3, 1),
                 "should throw an exception when points contain Infinity");
     }
