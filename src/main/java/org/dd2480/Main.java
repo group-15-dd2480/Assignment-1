@@ -44,6 +44,26 @@ public class Main {
     }
 
     /**
+     * 
+     * Function that corresponds to LIC 0
+     * 
+     * @param points an array of points
+     * @param length length of the containing circle
+     * @return true if there exists at least two points where the distance between
+     *         them is greater than LENGTH1
+     * @throws IllegalArgumentException if length is negative
+     */
+    public static boolean lic0(Point2D[] points, double length) {
+        if (length < 0)
+            throw new IllegalArgumentException("Length must be >= 0");
+        for (int i = 0; i < points.length - 1; i++) {
+            if (pointDistance(points[i], points[i + 1]) > length)
+                return true;
+        }
+        return false;
+    }
+
+    /**
      * Function that corresponds to LIC 1
      *
      * @param radius of the containing circle
