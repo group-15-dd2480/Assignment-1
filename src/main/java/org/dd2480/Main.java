@@ -142,6 +142,25 @@ public class Main {
 
         return false;
     }
+    /**
+     *
+     * Function that corresponds to LIC 5
+     *
+     * @param points array of points
+     * @return true if there exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such
+     * that X[j] - X[i] < 0. (where i = j-1)
+     * @throws IllegalArgumentException if number of points less than 2
+     */
+    public static boolean lic5(Point2D[] points){
+        if (points.length < 2){
+            throw new IllegalArgumentException("No of points less than 2");
+        }
+        for (int i=0; i < points.length-1;i++){
+            if (checkForXDrop(points[i],points[i+1]))
+                return true;
+        }
+        return false;
+    }
 
     /**
      * 
