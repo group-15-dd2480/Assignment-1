@@ -66,6 +66,7 @@ public class Main {
     /**
      * Function that corresponds to LIC 1
      *
+     * @param points array of points
      * @param radius of the containing circle
      * @return true iff there exists a set of three consecutive points that cannot
      *         be contained within (or on) a circle of the specified radius, false
@@ -221,6 +222,7 @@ public class Main {
      * 
      * Function that corresponds to LIC 8
      *
+     * @param points array of points
      * @param aPts   the number of consecutive points between the first and second
      *               point (A_PTS)
      * @param bPts   the number of consecutive points between the second and third
