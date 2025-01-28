@@ -93,6 +93,29 @@ public class Main {
     }
 
     /**
+     * Function that corresponds to LIC 3
+     * 
+     * @param points array of points
+     * @param area1  the area that the triangle must be greater than
+     * @return true iff there exists at least one set of three consecutive points
+     *         that form a triangle with an area greater than {@code area1}, false
+     *         otherwise
+     * @throws IllegalArgumentException if area1 is negative
+     */
+    public static boolean lic3(Point2D[] points, double area1) {
+        if (area1 < 0)
+            throw new IllegalArgumentException("Area1 must be >= 0");
+
+        for (int i = 0; i < points.length - 2; i++) {
+            Point2D[] triangle = new Point2D[] { points[i], points[i + 1], points[i + 2] };
+            if (triangleArea(triangle) > area1)
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Function that corresponds to LIC 4
      *
      * @param points array of points
