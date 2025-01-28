@@ -19,28 +19,11 @@ public class Main {
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
-                double distance = pointDistance(points[j], points[i]);
+                double distance = points[j].distance(points[i]);
                 if (distance > 2 * radius)
                     return false;
             }
         return true;
-    }
-
-    /**
-     * Checks the distance between two 2D points
-     *
-     * @param point1 a 2D point
-     * @param point2 a 2D point
-     * @return distance between point1 and point2
-     * @throws IllegalArgumentException if any point is null
-     */
-    public static double pointDistance(Point2D point1, Point2D point2) {
-        if (point1 == null || point2 == null) {
-            throw new IllegalArgumentException("No points can be null.");
-        }
-        double xDiff = point2.getX() - point1.getX();
-        double yDiff = point2.getY() - point1.getY();
-        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
     /**
@@ -57,7 +40,7 @@ public class Main {
         if (length < 0)
             throw new IllegalArgumentException("Length must be >= 0");
         for (int i = 0; i < points.length - 1; i++) {
-            if (pointDistance(points[i], points[i + 1]) > length)
+            if (points[i].distance(points[i + 1]) > length)
                 return true;
         }
         return false;
@@ -262,7 +245,7 @@ public class Main {
             throw new IllegalArgumentException("K_PTS must be <= NUMPOINTS - 2");
 
         for (int i = 0; i < points.length - kPts; i++) {
-            if (pointDistance(points[i], points[i + kPts]) > length) {
+            if (points[i].distance(points[i + kPts]) > length) {
                 return true;
             }
         }
@@ -606,8 +589,8 @@ public class Main {
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
         }
         // Calculate magnitudes of the edges
-        double magAB = pointDistance(pointA, pointB);
-        double magBC = pointDistance(pointB, pointC);
+        double magAB = pointA.distance(pointB);
+        double magBC = pointB.distance(pointC);
         // Check if any magnitude is zero
         if (magAB == 0 || magBC == 0) {
             throw new IllegalArgumentException("Magnitude of vectors cannot be zero.");
