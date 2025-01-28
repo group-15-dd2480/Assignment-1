@@ -373,6 +373,67 @@ public class Main {
     }
 
     /**
+     * Function that corresponds to LIC 14
+     * 
+     * @param points array of points
+     * @param ePts   the number of consecutive points between the first and second
+     *               point
+     * @param fPts   the number of consecutive points between the second and third
+     *               point
+     * @param area1  the area of the triangle formed by the three points must be
+     *               greater than this
+     * @param area2  the area of the triangle formed by the three points must be
+     *               less than this
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points)
+     *         that form a triangle with an area greater than {@code area1}, AND
+     *         there exists a valid set of points that form a triangle with an area
+     *         less than {@code area2}, otherwise false.
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code area1} < 0</li>
+     *                                  <li>If {@code area2} < 0</li>
+     *                                  <li>If {@code ePts} < 0</li>
+     *                                  <li>If {@code fPts} < 0</li>
+     *                                  <li>If {@code ePts} + {@code fPts} >
+     *                                  {@code points} - 3</li>
+     *                                  </ul>
+     */
+    public static boolean lic14(Point2D[] points, int ePts, int fPts, double area1, double area2) {
+        if (points.length < 5)
+            return false;
+
+        if (area1 < 0)
+            throw new IllegalArgumentException("area1 must be >= 0");
+        if (area2 < 0)
+            throw new IllegalArgumentException("area2 must be >= 0");
+        if (ePts < 0)
+            throw new IllegalArgumentException("ePts must be >= 0");
+        if (fPts < 0)
+            throw new IllegalArgumentException("fPts must be >= 0");
+        if (ePts + fPts > points.length - 3)
+            throw new IllegalArgumentException("ePts + fPts must be <= points - 3");
+
+        boolean condA = false;
+        boolean condB = false;
+
+        for (int i = 0; i < points.length - 2 - ePts - fPts; i++) {
+            Point2D[] triangle = { points[i], points[i + 1 + ePts], points[i + 2 + ePts + fPts] };
+            double triangleArea = triangleArea(triangle);
+
+            if (triangleArea > area1)
+                condA = true;
+            if (triangleArea < area2)
+                condB = true;
+
+            if (condA && condB)
+                return true;
+        }
+
+        return condA && condB;
+    }
+
+    /**
      * Calculates the area of a triangle given its three points.
      *
      * @param points an array of points representing the vertices of the triangle
