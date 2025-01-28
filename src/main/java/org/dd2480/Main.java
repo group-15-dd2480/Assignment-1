@@ -48,9 +48,9 @@ public class Main {
      * Function that corresponds to LIC 0
      * 
      * @param points an array of points
-     * @param length length of the containing circle
+     * @param length length to be compared with
      * @return true if there exists at least two points where the distance between
-     *         them is greater than LENGTH1
+     *         them is greater than length (LENGTH1)
      * @throws IllegalArgumentException if length is negative
      */
     public static boolean lic0(Point2D[] points, double length) {
@@ -82,13 +82,15 @@ public class Main {
                 return true;
         return false;
     }
+
     /**
      * Function that corresponds to LIC 2
      *
      * @param points  array of points
      * @param epsilon deviation from PI in LIC # 2 & 9
-     * @return true if there exists at least one set of three consecutive data points
-     * which form an angle that is not in the range of epsilon from pi
+     * @return true if there exists at least one set of three consecutive data
+     *         points
+     *         which form an angle that is not in the range of epsilon from pi
      *         false if number of points are less than 3 or the condition is not met
      * @throws IllegalArgumentException if epsilon is not in the range: [0,pi)
      */
@@ -96,7 +98,7 @@ public class Main {
         if (epsilon < 0 || epsilon >= Math.PI) {
             throw new IllegalArgumentException("Invalid input for epsilon.");
         }
-        if (points.length < 3){
+        if (points.length < 3) {
             return false;
         }
         for (int i = 0; i < points.length - 2; i++) {
@@ -239,6 +241,36 @@ public class Main {
 
     /**
      * 
+     * Function that corresponds to LIC 7
+     * 
+     * @param points the array of data points
+     * @param kPts   the number of consecutive points between the first and second
+     *               point (K_PTS)
+     * @param length length to be compared with
+     * @returntrue if there exists at least two points separated by kPTS (K_PTS)
+     *             consecutive points where the distance between
+     *             them is greater than length (LENGTH1)
+     * @throws IllegalArgumentException
+     * 
+     */
+    public static boolean lic7(Point2D[] points, int kPts, double length) {
+        if (points.length < 3)
+            return false;
+        if (kPts < 1)
+            throw new IllegalArgumentException("K_PTS must be >= 1");
+        if (kPts > points.length - 2)
+            throw new IllegalArgumentException("K_PTS must be <= NUMPOINTS - 2");
+
+        for (int i = 0; i < points.length - kPts; i++) {
+            if (pointDistance(points[i], points[i + kPts]) > length) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
      * Function that corresponds to LIC 8
      *
      * @param points array of points
@@ -275,23 +307,27 @@ public class Main {
                 return true;
         return false;
     }
+
     /**
      * Function that corresponds to LIC 9
      *
-     * @param points array of points
-     * @param cPts the number of consecutive points between the first and second
-     *      *               point (C_PTS)
-     * @param dPts the number of consecutive points between the second and third
-     *      *               point (D_PTS)
+     * @param points  array of points
+     * @param cPts    the number of consecutive points between the first and second
+     *                * point (C_PTS)
+     * @param dPts    the number of consecutive points between the second and third
+     *                * point (D_PTS)
      * @param epsilon deviation from pi in LIC # 2 & 9
      * @return true if there exists at least one set of three data points
-     * separated by exactly C_PTS and D_PTS consecutive intervening points, respectively,
-     * that form an angle such that: angle < (PI-EPSILON) or angle > (PI+EPSILON).
+     *         separated by exactly C_PTS and D_PTS consecutive intervening points,
+     *         respectively,
+     *         that form an angle such that: angle < (PI-EPSILON) or angle >
+     *         (PI+EPSILON).
      *
-     * @throws IllegalArgumentException when C_PTS is < 1 or D_PTS is < 1 or C_PTS + D_PTS > (NUMPOINTS - 3)
+     * @throws IllegalArgumentException when C_PTS is < 1 or D_PTS is < 1 or C_PTS +
+     *                                  D_PTS > (NUMPOINTS - 3)
      */
     public static boolean lic9(Point2D[] points, int cPts, int dPts, double epsilon) {
-        if (points.length < 5){
+        if (points.length < 5) {
             return false;
         }
         if (cPts < 1)
