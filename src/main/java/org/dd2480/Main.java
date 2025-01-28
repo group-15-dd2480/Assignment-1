@@ -344,6 +344,53 @@ public class Main {
         // If number of points less than 5 or the condition is not met
         return false;
     }
+
+    /**
+     * Function that corresponds to LIC 10
+     * 
+     * @param points array of points
+     * @param ePts   the number of consecutive points between the first and second
+     *               point
+     * @param fPts   the number of consecutive points between the second and third
+     *               point
+     * @param area1  the area of the triangle formed by the three points must be
+     *               greater than this
+     * @return true iff there exists a valid set of points (separated by the
+     *         specified number of consecutive points) that form a triangle with an
+     *         area greater than {@code area1}, otherwise false
+     * @throws IllegalArgumentException
+     *                                  <ul>
+     *                                  <li>If {@code ePts} < 1</li>
+     *                                  <li>If {@code fPts} < 1</li>
+     *                                  <li>If {@code area1} < 0</li>
+     *                                  <li>If {@code ePts} + {@code fPts} >
+     *                                  {@code points} - 3</li>
+     *                                  </ul>
+     */
+    public static boolean lic10(Point2D[] points, int ePts, int fPts, double area1) {
+        if (points.length < 5)
+            return false;
+
+        if (ePts < 1)
+            throw new IllegalArgumentException("ePts must be >= 1");
+        if (fPts < 1)
+            throw new IllegalArgumentException("fPts must be >= 1");
+        if (area1 < 0)
+            throw new IllegalArgumentException("area1 must be >= 0");
+        if (ePts + fPts > points.length - 3)
+            throw new IllegalArgumentException("ePts + fPts must be <= points - 3");
+
+        for (int i = 0; i < points.length - 2 - ePts - fPts; i++) {
+            Point2D[] triangle = { points[i], points[i + 1 + ePts], points[i + 2 + ePts + fPts] };
+            double triangleArea = triangleArea(triangle);
+
+            if (triangleArea > area1)
+                return true;
+        }
+
+        return false;
+    }
+
     /**
      *
      * Function that corresponds to LIC 11
