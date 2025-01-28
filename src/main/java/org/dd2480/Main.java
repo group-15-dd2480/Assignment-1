@@ -50,7 +50,7 @@ public class Main {
      * @param points an array of points
      * @param length length to be compared with
      * @return true if there exists at least two points where the distance between
-     *         them is greater than LENGTH1
+     *         them is greater than length (LENGTH1)
      * @throws IllegalArgumentException if length is negative
      */
     public static boolean lic0(Point2D[] points, double length) {
@@ -227,9 +227,9 @@ public class Main {
      * @param kPts   the number of consecutive points between the first and second
      *               point (K_PTS)
      * @param length length to be compared with
-     * @returntrue if there exists at least two points separated by K_PTS
+     * @returntrue if there exists at least two points separated by kPTS (K_PTS)
      *             consecutive points where the distance between
-     *             them is greater than LENGTH1
+     *             them is greater than length (LENGTH1)
      * @throws IllegalArgumentException
      * 
      */
