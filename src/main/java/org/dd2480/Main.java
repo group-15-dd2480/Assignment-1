@@ -19,7 +19,7 @@ public class Main {
             throw new IllegalArgumentException("Radius must be >= 0");
         for (int i = 0; i < points.length - 1; i++)
             for (int j = i + 1; j < points.length; j++) {
-                double distance = points[j].distance(points[i].getX(), points[i].getY());
+                double distance = points[j].distance(points[i]);
                 if (distance > 2 * radius)
                     return false;
             }
@@ -40,7 +40,7 @@ public class Main {
         if (length < 0)
             throw new IllegalArgumentException("Length must be >= 0");
         for (int i = 0; i < points.length - 1; i++) {
-            if (points[i].distance(points[i + 1].getX(), points[i + 1].getY()) > length)
+            if (points[i].distance(points[i + 1]) > length)
                 return true;
         }
         return false;
@@ -245,7 +245,7 @@ public class Main {
             throw new IllegalArgumentException("K_PTS must be <= NUMPOINTS - 2");
 
         for (int i = 0; i < points.length - kPts; i++) {
-            if (points[i].distance(points[i + kPts].getX(), points[i + kPts].getY()) > length) {
+            if (points[i].distance(points[i + kPts]) > length) {
                 return true;
             }
         }
@@ -542,8 +542,8 @@ public class Main {
             throw new IllegalArgumentException("Points cannot be the same. Angle is undefined.");
         }
         // Calculate magnitudes of the edges
-        double magAB = pointA.distance(pointB.getX(), pointB.getY());
-        double magBC = pointB.distance(pointC.getX(), pointC.getY());
+        double magAB = pointA.distance(pointB);
+        double magBC = pointB.distance(pointC);
         // Check if any magnitude is zero
         if (magAB == 0 || magBC == 0) {
             throw new IllegalArgumentException("Magnitude of vectors cannot be zero.");
