@@ -42,6 +42,15 @@ class Lic7Test {
         }
 
         @Test
+        void shouldReturnFalse_whenSetIsConsecutive() {
+                Point2D[] points = new Point2D[] { new Point2D.Double(0, 1), new Point2D.Double(0, 3),
+                                new Point2D.Double(0, 2), };
+
+                assertEquals(false, Main.lic7(points, 1, 1.1),
+                                "should be false since set is not separated by K_PTS");
+        }
+
+        @Test
         void shouldReturnFalse_whenNotEnoughPoints() {
                 Point2D[] points = new Point2D[] { new Point2D.Double(0, 1), new Point2D.Double(0, 2), };
 
