@@ -704,7 +704,116 @@ public class Main {
         }
         return point2.getX()-point1.getX() < 0;
     }
+  
+    /**
+     * 
+     * Function that creates CMV (Conditions Met Vector) based on the given
+     * parameters and the 15 LICs.
+     * 
+     * @param points  an array of points
+     * @param length1 Length in LICs 0, 7, 12
+     * @param radius1 Radius in LICs 1, 8, 13
+     * @param epsilon Deviation from PI in LICs 2, 9
+     * @param area1   Area in LICs 3, 10, 14
+     * @param qPts    No. of consecutive points in LIC 4
+     * @param quads   No. of quadrants in LIC 4
+     * @param dist    Distance in LIC 6
+     * @param nPts    No. of consecutive pts. in LIC 6
+     * @param kPts    No. of int. pts. in LICs 7, 12
+     * @param aPts    No. of int. pts. in LICs 8, 13
+     * @param bPts    No. of int. pts. in LICs 8, 13
+     * @param cPts    No. of int. pts. in LIC 9
+     * @param dPts    No. of int. pts. in LIC 9
+     * @param ePts    No. of int. pts. in LICs 10, 14
+     * @param fPts    No. of int. pts. in LICs 10, 14
+     * @param gPts    No. of int. pts. in LIC 11
+     * @param length2 Maximum length in LIC 12
+     * @param radius2 Maximum radius in LIC 13
+     * @param area2   Maximum area in LIC 14
+     * @return the CMV (Conditions Met Vector)
+     * @throws IllegalArgumentException if {@code points} length is below 2 or over 100
+     */
+    public static boolean[] getCmv(Point2D[] points, double length1, double radius1, double epsilon, double area1,
+            int qPts, int quads, double dist, int nPts, int kPts, int aPts, int bPts, int cPts, int dPts, int ePts,
+            int fPts, int gPts, double length2, double radius2, double area2) {
 
+        if (points.length < 2)
+            throw new IllegalArgumentException("too few points, at least 2 are needed");
+        if (points.length > 100)
+            throw new IllegalArgumentException("too many points, at most 100 can be used");
+
+        boolean[] cmv = new boolean[15];
+
+        cmv[0] = lic0(points, length1);
+        cmv[1] = lic1(points, radius1);
+        cmv[2] = lic2(points, epsilon);
+        cmv[3] = lic3(points, area1);
+        cmv[4] = lic4(points, qPts, quads);
+        cmv[5] = lic5(points);
+        cmv[6] = lic6(points, nPts, dist);
+        cmv[7] = lic7(points, kPts, length1);
+        cmv[8] = lic8(points, aPts, bPts, radius1);
+        cmv[9] = lic9(points, cPts, dPts, epsilon);
+        cmv[10] = lic10(points, ePts, fPts, area1);
+        cmv[11] = lic11(points, gPts);
+        cmv[12] = lic12(points, kPts, length1, length2);
+        cmv[13] = lic13(points, aPts, bPts, radius1, radius2);
+        cmv[14] = lic14(points, ePts, fPts, area1, area2);
+
+        return cmv;
+    }
+
+    /**
+     * Represents the possible operations present in the LCM (Logical Connector
+     * Matrix)
+     */
+    enum Op {
+        NOTUSED,
+        ANDD,
+        ORR
+    }
+
+    /**
+     * 
+     * Function that creates the PUM based on the LCM and CMV. The values in the CMV
+     * is combined with an operation defined in the LCM, resulting in a boolean
+     * matrix.
+     * 
+     * @param lcm the LCM (Logical Connector Matrix)
+     * @param cmv the CMV (Conditions Met Vector)
+     * @return the PUM (Preliminary Unlocking Matrix)
+     * @throws IllegalArgumentException if {@code lcm} is not a 15x15 matrix or if
+     *                                  {@code cmv} is not a vector of size 15
+     */
+    public static boolean[][] getPum(Op[][] lcm, boolean[] cmv) {
+
+        if (lcm.length != 15)
+            throw new IllegalArgumentException("LCM needs to be a 15x15 matrix");
+        for (int i = 0; i < lcm.length; i++)
+            if (lcm[i].length != 15)
+                throw new IllegalArgumentException("LCM needs to be a 15x15 matrix");
+        if (cmv.length != 15)
+            throw new IllegalArgumentException("CMV should be of length 15");
+
+        boolean[][] pum = new boolean[15][15];
+
+        for (int i = 0; i < 15; i++)
+            for (int j = 0; j < 15; j++)
+                switch (lcm[i][j]) {
+                    case Op.NOTUSED:
+                        pum[i][j] = true;
+                        break;
+                    case Op.ANDD:
+                        pum[i][j] = cmv[i] && cmv[j];
+                        break;
+                    case Op.ORR:
+                        pum[i][j] = cmv[i] || cmv[j];
+                        break;
+                }
+
+        return pum;
+    }
+      
     /**
      * 
      * Function that creates the FUV based on the PUM and PUV. If the corresponding
@@ -744,7 +853,7 @@ public class Main {
 
         return fuv;
     }
-
+  
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
