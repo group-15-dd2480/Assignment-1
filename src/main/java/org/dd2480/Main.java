@@ -425,6 +425,44 @@ public class Main {
 
     /**
      *
+     * Function that corresponds to LIC 12
+     * 
+     * @param points  the array of data points
+     * @param kPts    the number of consecutive points between the first and second
+     *                point (K_PTS)
+     * @param length1 length to be compared with
+     * @param length2 length to be compared with
+     * @return true if there exists at least two points separated by kPTS (K_PTS)
+     *         consecutive points where the distance between
+     *         them is greater than length1 (LENGTH1) and two points separated
+     *         by kPTS (K_PTS) where the distance between them is less than
+     *         length2 (LENGTH2)
+     * @throws IllegalArgumentException
+     * 
+     */
+    public static boolean lic12(Point2D[] points, int kPts, double length1, double length2) {
+        if (points.length < 3)
+            return false;
+        if (kPts < 1)
+            throw new IllegalArgumentException("K_PTS must be >= 1");
+        if (length1 < 0 || length2 < 0)
+            throw new IllegalArgumentException("LENGTH2 and LENGTH1 must be >= 0");
+        if (kPts > points.length - 2)
+            throw new IllegalArgumentException("K_PTS must be <= NUMPOINTS - 2");
+        boolean length1Check = false;
+        boolean length2Check = false;
+        for (int i = 0; i < points.length - kPts - 1; i++) {
+            double distance = points[i].distance(points[i + 1 + kPts]);
+            if (distance > length1)
+                length1Check = true;
+            if (distance < length2)
+                length2Check = true;
+        }
+        return length1Check && length2Check;
+    }
+
+    /**
+     *
      * Function that corresponds to LIC 13
      *
      * @param points  array of points
