@@ -814,6 +814,46 @@ public class Main {
         return pum;
     }
       
+    /**
+     * 
+     * Function that creates the FUV based on the PUM and PUV. If the corresponding
+     * entry in PUV is false then the FUV entry is true. If the PUV entry is true,
+     * then the entire corresponding row in the PUM has to be true for the FUV entry
+     * to be true.
+     * 
+     * @param pum the PUM (Preliminary Unlocking Matrix)
+     * @param puv the PUV (Preliminary Unlocking Vector)
+     * @return the FUV (Final Unlocking Vector)
+     * @throws IllegalArgumentException if {@code pum} is not a 15x15 matrix or if
+     *                                  {@code puv} is not a vector of size 15
+     */
+    public static boolean[] getFuv(boolean[][] pum, boolean[] puv) {
+
+        if (pum.length != 15)
+            throw new IllegalArgumentException("PUM needs to be a 15x15 matrix");
+        for (int i = 0; i < pum.length; i++)
+            if (pum[i].length != 15)
+                throw new IllegalArgumentException("PUM needs to be a 15x15 matrix");
+        if (puv.length != 15)
+            throw new IllegalArgumentException("PUV should be of length 15");
+
+        boolean[] fuv = new boolean[15];
+        for (int i = 0; i < fuv.length; i++)
+            if (puv[i]) {
+                boolean temp = true;
+                // Only true if the entire row is true
+                for (int j = 0; j < 15; j++)
+                    if (!pum[i][j]) {
+                        temp = false;
+                        break;
+                    }
+                fuv[i] = temp;
+            } else
+                fuv[i] = true;
+
+        return fuv;
+    }
+  
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
