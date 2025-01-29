@@ -704,8 +704,8 @@ public class Main {
         }
         return point2.getX()-point1.getX() < 0;
     }
-
-        /**
+  
+    /**
      * 
      * Function that creates CMV (Conditions Met Vector) based on the given
      * parameters and the 15 LICs.
@@ -763,6 +763,57 @@ public class Main {
         return cmv;
     }
 
+    /**
+     * Represents the possible operations present in the LCM (Logical Connector
+     * Matrix)
+     */
+    enum Op {
+        NOTUSED,
+        ANDD,
+        ORR
+    }
+
+    /**
+     * 
+     * Function that creates the PUM based on the LCM and CMV. The values in the CMV
+     * is combined with an operation defined in the LCM, resulting in a boolean
+     * matrix.
+     * 
+     * @param lcm the LCM (Logical Connector Matrix)
+     * @param cmv the CMV (Conditions Met Vector)
+     * @return the PUM (Preliminary Unlocking Matrix)
+     * @throws IllegalArgumentException if {@code lcm} is not a 15x15 matrix or if
+     *                                  {@code cmv} is not a vector of size 15
+     */
+    public static boolean[][] getPum(Op[][] lcm, boolean[] cmv) {
+
+        if (lcm.length != 15)
+            throw new IllegalArgumentException("LCM needs to be a 15x15 matrix");
+        for (int i = 0; i < lcm.length; i++)
+            if (lcm[i].length != 15)
+                throw new IllegalArgumentException("LCM needs to be a 15x15 matrix");
+        if (cmv.length != 15)
+            throw new IllegalArgumentException("CMV should be of length 15");
+
+        boolean[][] pum = new boolean[15][15];
+
+        for (int i = 0; i < 15; i++)
+            for (int j = 0; j < 15; j++)
+                switch (lcm[i][j]) {
+                    case Op.NOTUSED:
+                        pum[i][j] = true;
+                        break;
+                    case Op.ANDD:
+                        pum[i][j] = cmv[i] && cmv[j];
+                        break;
+                    case Op.ORR:
+                        pum[i][j] = cmv[i] || cmv[j];
+                        break;
+                }
+
+        return pum;
+    }
+      
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
