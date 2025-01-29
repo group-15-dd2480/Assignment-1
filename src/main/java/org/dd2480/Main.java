@@ -253,9 +253,9 @@ public class Main {
      * @param kPts   the number of consecutive points between the first and second
      *               point (K_PTS)
      * @param length length to be compared with
-     * @returntrue if there exists at least two points separated by kPTS (K_PTS)
-     *             consecutive points where the distance between
-     *             them is greater than length (LENGTH1)
+     * @return true if there exists at least two points separated by kPTS (K_PTS)
+     *         consecutive points where the distance between
+     *         them is greater than length (LENGTH1)
      * @throws IllegalArgumentException
      * 
      */
@@ -267,8 +267,8 @@ public class Main {
         if (kPts > points.length - 2)
             throw new IllegalArgumentException("K_PTS must be <= NUMPOINTS - 2");
 
-        for (int i = 0; i < points.length - kPts; i++) {
-            if (points[i].distance(points[i + kPts]) > length) {
+        for (int i = 0; i < points.length - kPts - 1; i++) {
+            if (points[i].distance(points[i + kPts + 1]) > length) {
                 return true;
             }
         }
