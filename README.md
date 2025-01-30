@@ -13,6 +13,12 @@ To build the code, run `mvn clean install` in the root directory of the project.
 
 To just run the tests, run `mvn test` in the root directory of the project.
 
+## Maven and Java Version
+
+Maven version: 3.9.9
+
+Java version: 21.0.2
+
 ## Folder structure overview
 
 The main file can be found in `/src/main/java/org/dd2480/Main.java`
