@@ -853,7 +853,57 @@ public class Main {
 
         return fuv;
     }
-  
+
+    /**
+     * Decides whether the given parameters satisfy the requirements to launch the
+     * interceptor missile.
+     * 
+     * @param points     array of points
+     * @param parameters input parameters for this particular case
+     * @param lcm        the LCM (Logical Connector Matrix)
+     * @param puv        the PUV (Preliminary Unlocking Vector)
+     * @return true if the parameters satisfy the requirements, false otherwise
+     * @throws IllegalArgumentException if there are more than 100 points
+     */
+    public static boolean decide(Point2D[] points, Parameters parameters, Op[][] lcm, boolean[] puv) {
+        if (points.length > 100) {
+            throw new IllegalArgumentException("Too many points, at most 100 can be used");
+        }
+
+        boolean[] cmv = getCmv(
+                points,
+                parameters.length1,
+                parameters.radius1,
+                parameters.epsilon,
+                parameters.area1,
+                parameters.qPts,
+                parameters.quads,
+                parameters.dist,
+                parameters.nPts,
+                parameters.kPts,
+                parameters.aPts,
+                parameters.bPts,
+                parameters.cPts,
+                parameters.dPts,
+                parameters.ePts,
+                parameters.fPts,
+                parameters.gPts,
+                parameters.length2,
+                parameters.radius2,
+                parameters.area2);
+
+        boolean[][] pum = getPum(lcm, cmv);
+        boolean[] fuv = getFuv(pum, puv);
+
+        for (boolean b : fuv) {
+            if (!b) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }
