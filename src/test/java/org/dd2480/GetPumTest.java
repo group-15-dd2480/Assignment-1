@@ -37,26 +37,26 @@ class GetPumTest {
     }
 
     @Test
-    void shouldReturnIncorrectMatrix_whenGivenIncorrectParameters() {
+    void shouldReturnAllFalse_whenGivenFalseCmv() {
 
         // Smaller constructions are used to make it more human readable
 
         Op[][] subLcm = {
-            { Op.ANDD, Op.ANDD, Op.ANDD, Op.ANDD },
-            { Op.ANDD, Op.ANDD, Op.ORR, Op.ORR },
-            { Op.ORR, Op.ORR, Op.ANDD, Op.ORR },
-            { Op.ORR, Op.ORR, Op.ANDD, Op.ANDD },
-    };
+                { Op.ANDD, Op.ANDD, Op.ANDD, Op.ANDD },
+                { Op.ANDD, Op.ANDD, Op.ORR, Op.ORR },
+                { Op.ORR, Op.ORR, Op.ANDD, Op.ORR },
+                { Op.ORR, Op.ORR, Op.ANDD, Op.ANDD },
+        };
 
-        boolean[] subCmv = { true, true, true, true };
+        boolean[] subCmv = { false, false, false, false };
 
         boolean[][] subPum = {
-            // Diagonal is irrelevant
-            { false, false, false, false },
-            { false, false, false, false },
-            { false, false, false, false },
-            { false, false, false, false },
-    };
+                // Diagonal is irrelevant
+                { true, true, true, true },
+                { true, true, true, true },
+                { true, true, true, true },
+                { true, true, true, true },
+        };
 
         // Incorporating the constructions into the actual sized matrices/arrays
 
