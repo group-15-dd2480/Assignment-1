@@ -42,21 +42,21 @@ class GetPumTest {
         // Smaller constructions are used to make it more human readable
 
         Op[][] subLcm = {
-                { Op.ANDD, Op.ANDD, Op.ORR, Op.ANDD },
-                { Op.ANDD, Op.ANDD, Op.ORR, Op.ORR },
-                { Op.ORR, Op.ORR, Op.ANDD, Op.ANDD },
-                { Op.ANDD, Op.ORR, Op.ANDD, Op.ANDD },
-        };
+            { Op.ANDD, Op.ANDD, Op.ANDD, Op.ANDD },
+            { Op.ANDD, Op.ANDD, Op.ORR, Op.ORR },
+            { Op.ORR, Op.ORR, Op.ANDD, Op.ORR },
+            { Op.ORR, Op.ORR, Op.ANDD, Op.ANDD },
+    };
 
-        boolean[] subCmv = { false, true, true, true };
+        boolean[] subCmv = { true, true, true, true };
 
         boolean[][] subPum = {
-                // Diagonal is irrelevant
-                { true, false, false, false },
-                { false, true, false, true },
-                { false, false, true, false },
-                { false, false, false, true },
-        };
+            // Diagonal is irrelevant
+            { false, false, false, false },
+            { false, false, false, false },
+            { false, false, false, false },
+            { false, false, false, false },
+    };
 
         // Incorporating the constructions into the actual sized matrices/arrays
 
