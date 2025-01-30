@@ -905,6 +905,64 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        Point2D[] points = new Point2D[] {
+            new Point2D.Double(0, 0),
+            new Point2D.Double(1, 0),
+            new Point2D.Double(0, 2),
+            new Point2D.Double(2, 2),
+            new Point2D.Double(4, 2),
+            new Point2D.Double(2, 4),
+            new Point2D.Double(0, 4),
+        };
+
+        boolean[] puv = new boolean[] {true, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+
+        Op[][] lcm = new Op[][] {
+             {Op.ANDD, Op.ANDD, Op.ANDD, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED},
+             {Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED, Op.NOTUSED, Op.ANDD, Op.ANDD, Op.ORR, Op.NOTUSED}
+        };
+
+        Parameters parameters = new Parameters(
+            Math.PI/4, 
+            2., 
+            3., 
+            2., 
+            3., 
+            2., 
+            4., 
+            1, 
+            1, 
+            1, 
+            1, 
+            1, 
+            1, 
+            1, 
+            1, 
+            3, 
+            2, 
+            1, 
+            2.
+        );
+
+        boolean shouldLaunch = decide(points, parameters, lcm, puv);
+        
+        if(shouldLaunch)
+            System.out.println("YES");
+        else
+            System.out.println("NO");
     }
 }
